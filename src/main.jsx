@@ -16,11 +16,12 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Profile from "./pages/Profile.jsx";
 import Register from "./pages/Register.jsx";
 import Achievement from "./pages/Achievement.jsx";
+import Home from "./pages/Home.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <News />,
+    element: <Home />,
   },
   {
     path: "/news",
