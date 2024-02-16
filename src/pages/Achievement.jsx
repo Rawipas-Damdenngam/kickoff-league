@@ -33,6 +33,7 @@ import {
 } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import BasicModal from "../components/modal/Modal";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -174,7 +175,7 @@ export default function Achievement() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} color="success">
+      <AppBar position="fixed" open={open} color="primary">
         <Toolbar sx={{ display: "flex" }}>
           <IconButton
             color="inherit"
@@ -198,11 +199,9 @@ export default function Achievement() {
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
           <Button variant="contained" sx={{}}>
-            Register
+            <LogoutIcon></LogoutIcon>
           </Button>
-          <Button variant="contained" sx={{ marginLeft: 2 }}>
-            Login
-          </Button>
+          
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

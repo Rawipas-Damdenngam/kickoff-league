@@ -33,6 +33,7 @@ import {
   Pin,
   InfoWindow,
 } from "@vis.gl/react-google-maps";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
@@ -175,7 +176,7 @@ export default function News() {
     <APIProvider>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open} color="success">
+        <AppBar position="fixed" open={open} color="primary">
           <Toolbar sx={{ display: "flex" }}>
             <IconButton
               color="inherit"
@@ -198,15 +199,11 @@ export default function News() {
               News
             </Typography>
             <Box sx={{ paddingLeft: 110 }}></Box>
-            <Link to={"/register"}>
-              <Button variant="contained" sx={{}}>
-                Register
+            <Link to={"/"}>
+              <Button variant="contained" sx={{ backgroundColor: `` }}>
+                <LogoutIcon sx={{}}></LogoutIcon>
               </Button>
             </Link>
-
-            <Button variant="contained" sx={{ marginLeft: 2 }}>
-              Login
-            </Button>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

@@ -1,7 +1,18 @@
 import "./Home.css";
+import { ToastContainer, toast } from "react-toastify";
+import Data from "../data/mockUP.json";
+import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
-import { Box, Container, FormControl } from "@mui/material/";
+import {
+  Box,
+  Container,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Input,
+} from "@mui/material/";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -17,9 +28,11 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
 import Links from "@mui/material/Link";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import zIndex from "@mui/material/styles/zIndex";
 
 export default function Home() {
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -31,6 +44,7 @@ export default function Home() {
     ...theme.mixins.toolbar,
   }));
 
+  const currentYear = new Date().getFullYear();
   const itemData = [
     {
       img: "src/assets/images/grass_field.jpeg",
@@ -59,6 +73,58 @@ export default function Home() {
     maxHeight: 90 + "%",
   };
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
+  };
+
+  const proceedLogin = (e) => {
+    e.preventDefault();
+
+    if (validate()) {
+      let user = Data.users.find((user) => user.email === username);
+      if (user) {
+        if (user.password_hash === password) {
+          console.log("Login Success");
+          alert("Login Success");
+          toast.success("Login Success");
+        } else {
+          console.log("Password incorrect");
+          alert("Password incorrect");
+          toast.error("Password incorrect");
+        }
+      } else {
+        console.log("User not found");
+        alert("User not found");
+        toast.error("User not found");
+      }
+    }
+  };
+
+  const validate = () => {
+    let result = true;
+
+    if (username === "" || username === null) {
+      result = false;
+      console.log("enter mail");
+      alert("Please Enter Email");
+      toast.warn("Please Enter Email");
+    }
+    if (password === "" || password === null) {
+      result = false;
+      console.log("enter pass");
+      alert("Please Enter Password");
+      toast.warning("Please Enter Password");
+    }
+    return result;
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -81,21 +147,33 @@ export default function Home() {
   const ShowSignIn = ({ signIn }) => {
     if (signIn) {
       return (
-        <FormControl sx={{ width: `100%` }}>
+        <Box >
           <Box sx={{ mb: 2 }}>
-            <TextField
-              sx={{ width: `100%` }}
-              type="text"
-              label="Email"
-              placeholder="Enter email"
-            ></TextField>
+          <TextField onChange={(e)=> {setUsername(e.target.value), console.log(username)}}></TextField>
           </Box>
+
           <Box sx={{ mb: 2 }}>
             <TextField
+              id="password"
               sx={{ width: `100%` }}
-              type="password"
+              type={showPassword ? "text" : "password"}
               label="Password"
               placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             ></TextField>
           </Box>
 
@@ -107,16 +185,10 @@ export default function Home() {
                 alignItems: "stretch",
               }}
             >
-              <Link
-                to="/news"
-                style={{
-                  display: "flex",
-                  width: `100%`,
-                  justifyContent: "center",
-                }}
-              >
+              <Link to="/news">
                 <Button
-                  type="submit"
+                  type="button"
+                  onClick={proceedLogin}
                   variant="contained"
                   sx={{ p: `9px 16px`, width: `100%` }}
                 >
@@ -129,17 +201,18 @@ export default function Home() {
               </Links>
             </Box>
           </Box>
-        </FormControl>
+        </Box>
       );
     } else {
       return (
-        <FormControl sx={{ width: `100%` }}>
+        <Box sx={{ width: `100%` }}>
           <Box sx={{ mb: 2 }}>
             <TextField
               sx={{ width: `100%` }}
               type="text"
               label="Email"
               placeholder="Enter email"
+
             ></TextField>
           </Box>
           <Box sx={{ mb: 2 }}>
@@ -225,7 +298,7 @@ export default function Home() {
               </Links>
             </Box>
           </Box>
-        </FormControl>
+        </Box>
       );
     }
   };
@@ -237,7 +310,7 @@ export default function Home() {
         <Toolbar>
           <Box
             component="section"
-            sx={{ display: "flex", gap: 2, px: 2, flexGrow: 1 }}
+            sx={{ display: "flex", gap: 2, px: 2, flex: `1 0` }}
           >
             <Link to="findMatch">
               <Typography variant="h6" component="div" sx={{ color: "white" }}>
@@ -255,7 +328,10 @@ export default function Home() {
               </Typography>
             </Link>
           </Box>
-          <Box component="section" sx={{ flexGrow: 1, mr: 15 }}>
+          <Box
+            component="section"
+            sx={{ flexGrow: 1, justifyContent: "center" }}
+          >
             <Box component="section" sx={{ display: "flex", gap: 1 }}>
               <SportsSoccerIcon sx={{ fontSize: 30 }}></SportsSoccerIcon>
               <Box sx={{ fontSize: 20 }}>Kickoff League</Box>
@@ -372,7 +448,6 @@ export default function Home() {
                             Continue with Facebook
                           </Typography>
                         </Button>
-                        <Button>3</Button>
                       </Box>
                     </Box>
                   </Box>
@@ -462,6 +537,24 @@ export default function Home() {
                 ))}
               </ImageList>
             </Box>
+          </Box>
+   
+        </Box>
+        <Box sx={{ height: 100 }}></Box>
+        <Box component="footer" sx={{ display: "flex" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexGrow: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid grey",
+              py: 2,
+            }}
+          >
+            <Typography variant="body1" sx={{ color: "grey" }}>
+              © {currentYear} Kickoff League. All rights reserved.
+            </Typography>
           </Box>
         </Box>
       </Box>

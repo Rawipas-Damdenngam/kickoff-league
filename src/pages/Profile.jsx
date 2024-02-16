@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -25,8 +24,16 @@ import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import { useState } from "react";
-import { Button, Icon, createTheme } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  Icon,
+  TextField,
+  createTheme,
+} from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -153,6 +160,136 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+// const [editInfo, setEditInfo] = useState(true);
+
+// const handleNextClick = () => {
+//   return setEditInfo(false);
+// };
+
+// const DisplayEditInfo = ({ editInfo }) => {
+//   if (editInfo) {
+//     return (
+//       <Box
+//         component="container"
+//         sx={{ display: "flex", flexDirection: "column" }}
+//       >
+//         <FormControl component="form" sx={{ alignItems: "center", p: 3 }}>
+//           <Box>
+//             <AccountCircleIcon sx={{ fontSize: 90 }}></AccountCircleIcon>
+//           </Box>
+//           <Box
+//             component="edit_info"
+//             sx={{
+//               display: "flex",
+//               flexDirection: "row",
+//               gap: 5,
+//               width: `100%`,
+//               justifyContent: "center",
+//             }}
+//           >
+//             <Box sx={{}}>
+//               <Typography>Name</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//             <Box>
+//               <Typography>Last name</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//           </Box>
+//           <Box
+//             component="edit_info"
+//             sx={{
+//               display: "flex",
+//               flexDirection: "row",
+//               gap: 5,
+//               width: `100%`,
+//               justifyContent: "center",
+//             }}
+//           >
+//             <Box sx={{}}>
+//               <Typography>Passoword</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//             <Box>
+//               <Typography>Confirm password</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//           </Box>
+//           <Box
+//             component="edit_info"
+//             sx={{
+//               display: "flex",
+//               flexDirection: "row",
+//               gap: 5,
+//               width: `100%`,
+//               justifyContent: "center",
+//             }}
+//           >
+//             <Box sx={{}}>
+//               <Typography>Phone number</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//             <Box>
+//               <Typography>Email address</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//           </Box>
+//           <Box
+//             component="edit_info"
+//             sx={{
+//               display: "flex",
+//               flexDirection: "row",
+//               gap: 5,
+//               width: `100%`,
+//               justifyContent: "center",
+//             }}
+//           >
+//             <Box sx={{}}>
+//               <Typography>Address</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//             <Box>
+//               <Typography>Date of birth</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//           </Box>
+//           <Box
+//             component="edit_info"
+//             sx={{
+//               display: "flex",
+//               flexDirection: "row",
+//               gap: 5,
+//               width: `100%`,
+//               justifyContent: "start",
+//               ml: 71,
+//             }}
+//           >
+//             <Box sx={{}}>
+//               <Typography>Role</Typography>
+//               <TextField type="text" sx={{ width: `350px` }}></TextField>
+//             </Box>
+//           </Box>
+//           <Box sx={{ mt: 5 }}>
+//             <Button variant="contained" sx={{ px: 5 }}>
+//               Next
+//             </Button>
+//           </Box>
+//         </FormControl>
+//       </Box>
+//     );
+//   } else {
+//     reuturn(<DisplayEditAchievemet></DisplayEditAchievemet>);
+//   }
+// };
+
+// const DisplayEditAchievemet = () => {
+//   return (
+//     <Box component="container">
+//       <Box></Box>
+//     </Box>
+//   );
+// };
+
 export default function Profile() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -168,7 +305,7 @@ export default function Profile() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} color="success">
+      <AppBar position="fixed" open={open} color="primary">
         <Toolbar sx={{ display: "flex" }}>
           <IconButton
             color="inherit"
@@ -191,12 +328,11 @@ export default function Profile() {
             Profile
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
-          <Button variant="contained" sx={{}}>
-            Register
-          </Button>
-          <Button variant="contained" sx={{ marginLeft: 2 }}>
-            Login
-          </Button>
+          <Link to={"/"}>
+              <Button variant="contained" sx={{ backgroundColor: `` }}>
+                <LogoutIcon sx={{}}></LogoutIcon>
+              </Button>
+            </Link>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -244,13 +380,10 @@ export default function Profile() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: `100vh` }}>
         <DrawerHeader />
-        <Typography paragraph sx={{ height: 100 + "vh" }}>
-          content here
-        </Typography>
+        <Typography>sada</Typography>
       </Box>
     </Box>
   );
 }
-
