@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
+import "./Profile.css";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -26,6 +27,7 @@ import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import { useState } from "react";
 import {
   Button,
+  Card,
   Container,
   FormControl,
   Icon,
@@ -33,7 +35,8 @@ import {
   createTheme,
 } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
+import Data from "../../mockUP.json";
 
 const drawerWidth = 240;
 
@@ -329,10 +332,10 @@ export default function Profile() {
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
           <Link to={"/"}>
-              <Button variant="contained" sx={{ backgroundColor: `` }}>
-                <LogoutIcon sx={{}}></LogoutIcon>
-              </Button>
-            </Link>
+            <Button variant="contained" sx={{ backgroundColor: `` }}>
+              <LogoutIcon sx={{}}></LogoutIcon>
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -351,8 +354,8 @@ export default function Profile() {
         </DrawerHeader>
         <Divider />
         <List>
-          {drawerItems.map((items) => (
-            <Link to={items.link} key={items.title}>
+          {drawerItems.map((items, index) => (
+            <Link to={items.link} key={index}>
               <ListItem disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
@@ -380,9 +383,298 @@ export default function Profile() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: `100vh` }}>
+      <Box component="main" sx={{ flexGrow: 1, minHeight: `100vh` }}>
         <DrawerHeader />
-        <Typography>sada</Typography>
+        <Box>
+          <Box
+            sx={{
+              display: `flex`,
+              flexDirection: `column`,
+              position: `relative`,
+              minHeight: `50vh`,
+              backgroundRepeat: `no-repeat`,
+            }}
+          >
+            <Box
+              sx={{
+                width: `100%`,
+                height: `100%`,
+                position: `absolute`,
+                top: `0`,
+                left: `0`,
+              }}
+            >
+              <Box className="bg2"></Box>
+            </Box>
+            <Box sx={{ mt: `auto`, position: `relative` }}>
+              <Box
+                sx={{
+                  display: `flex`,
+                  p: `2rem`,
+                  alignItems: `center`,
+                  flexWrap: `wrap`,
+                }}
+              >
+                <Box sx={{ m: `1rem`, flex: `1,1,auto`, textAlign: `center` }}>
+                  <Box
+                    sx={{
+                      display: `block`,
+                      position: `relative`,
+                      width: `100%`,
+                      height: `0`,
+                    }}
+                  >
+                    <img
+                      src="src/assets/images/profile1.jpeg"
+                      style={{
+                        top: `0`,
+                        left: `0`,
+                        verticalAlign: `middle`,
+                        width: `100%`,
+                        height: `100%`,
+                        objectFit: `cover`,
+                      }}
+                    ></img>
+                  </Box>
+                </Box>
+                <Box sx={{ m: `1rem` }}>
+                  <Box>
+                    {Data.normalUser.map((user, index) => {
+                      if (user.id === 1)
+                        return (
+                          <Typography
+                            key={index}
+                            variant="h3"
+                            sx={{ color: `white` }}
+                          >
+                            {user.first_name_eng + " " + user.last_name_eng}
+                          </Typography>
+                        );
+                    })}
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+          <Box sx={{ px: `4rem` }}>
+            <Box id="tabs" sx={{ position: `relative` }}>
+              <Box id="tabs-tab" sx={{ fontSize: `16px` }}>
+                <Box
+                  sx={{
+                    display: `flex`,
+                    flexFlow: `row wrap`,
+                    margin: `0`,
+                    backgroundColor: `white`,
+                    justifyContent: `center`,
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      sx={{
+                        p: `1.5rem`,
+                        fontSize: `1.25rem`,
+                        fontWeight: `bold`,
+                        textTransform: `uppercase`,
+                      }}
+                    >
+                      About
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography
+                      sx={{
+                        p: `1.5rem`,
+                        fontSize: `1.25rem`,
+                        fontWeight: `bold`,
+                        textTransform: `uppercase`,
+                      }}
+                    >
+                      Activity
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography
+                      sx={{
+                        p: `1.5rem`,
+                        fontSize: `1.25rem`,
+                        fontWeight: `bold`,
+                        textTransform: `uppercase`,
+                      }}
+                    >
+                      social media
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <hr></hr>
+        <Box sx={{}}>
+          <Box sx={{}}>
+            <Box sx={{ mt: `2rem`, px: `4rem` }}>
+              <Box sx={{ display: `flex` }}>
+                <Box
+                  sx={{
+                    m: `1rem`,
+                    minHeight: `16rem`,
+                    flexGrow: `1`,
+                    fontSize: `16px`,
+                  }}
+                >
+                  <Box>
+                    <Box sx={{ lineHeight: `1.5` }}>
+                      <Box sx={{ width: `100%` }}>
+                        <Box sx={{ verticalAlign: `middle` }}>
+                          {Data.normalUser.map((data, index) => {
+                            if (data.id === 1) {
+                              const currentDate = new Date();
+                              const birthDate = new Date(data.date_of_birth);
+                              const age =
+                                currentDate.getFullYear() -
+                                birthDate.getFullYear();
+                              console.log(currentDate);
+                              return (
+                                <Box key={index}>
+                                  <Box
+                                    sx={{
+                                      display: `flex`,
+                                      flexDirection: `row`,
+                                      justifyContent: `space-between`,
+                                      borderBottom: `1px solid black`,
+                                      borderWidth: `0.125rem`,
+                                      borderColor: `#e5e8ed;`,
+                                    }}
+                                  >
+                                    <Typography
+                                      sx={{ pb: `1rem`, textAlign: `initial` }}
+                                    >
+                                      Nationality
+                                    </Typography>
+                                    <Typography
+                                      sx={{ pb: `1rem`, textAlign: `right` }}
+                                    >
+                                      {data.nationality}
+                                    </Typography>
+                                  </Box>
+                                  <Box>
+                                    {Data.addresses.map((address, index) => {
+                                      if (address.id === 1)
+                                        return (
+                                          <Box
+                                            key={index}
+                                            sx={{
+                                              display: `flex`,
+                                              flexDirection: `row`,
+                                              justifyContent: `space-between`,
+                                              borderBottom: `1px solid black`,
+                                              borderWidth: `0.125rem`,
+                                              borderColor: `#e5e8ed;`,
+                                            }}
+                                          >
+                                            <Typography
+                                              sx={{
+                                                py: `1rem`,
+                                                textAlign: `initial`,
+                                              }}
+                                            >
+                                              Address
+                                            </Typography>
+                                            <Typography
+                                              sx={{
+                                                py: `1rem`,
+                                                textAlign: `right`,
+                                              }}
+                                            >
+                                              {address.village +
+                                                "," +
+                                                " " +
+                                                address.subdistrict +
+                                                "," +
+                                                " " +
+                                                address.district}
+                                            </Typography>
+                                          </Box>
+                                        );
+                                    })}
+                                  </Box>
+                                  <Box
+                                    sx={{
+                                      display: `flex`,
+                                      flexDirection: `row`,
+                                      justifyContent: `space-between`,
+                                      borderBottom: `1px solid black`,
+                                      borderWidth: `0.125rem`,
+                                      borderColor: `#e5e8ed;`,
+                                    }}
+                                  >
+                                    <Typography
+                                      sx={{ py: `1rem`, textAlign: `initial` }}
+                                    >
+                                      Gender
+                                    </Typography>
+                                    <Typography
+                                      sx={{ py: `1rem`, textAlign: `right` }}
+                                    >
+                                      {data.sex}
+                                    </Typography>
+                                  </Box>
+                                  <Box
+                                    sx={{
+                                      display: `flex`,
+                                      flexDirection: `row`,
+                                      justifyContent: `space-between`,
+                                      borderBottom: `1px solid black`,
+                                      borderWidth: `0.125rem`,
+                                      borderColor: `#e5e8ed;`,
+                                    }}
+                                  >
+                                    <Typography
+                                      sx={{ py: `1rem`, textAlign: `initial` }}
+                                    >
+                                      Age
+                                    </Typography>
+                                    <Typography
+                                      sx={{ py: `1rem`, textAlign: `right` }}
+                                    >
+                                      {age}
+                                    </Typography>
+                                  </Box>
+                                  <Box
+                                    sx={{
+                                      display: `flex`,
+                                      flexDirection: `row`,
+                                      justifyContent: `space-between`,
+                                      borderBottom: `1px solid black`,
+                                      borderWidth: `0.125rem`,
+                                      borderColor: `#e5e8ed;`,
+                                    }}
+                                  >
+                                    <Typography
+                                      sx={{ py: `1rem`, textAlign: `initial` }}
+                                    >
+                                      Position
+                                    </Typography>
+                                    <Typography
+                                      sx={{ py: `1rem`, textAlign: `right` }}
+                                    >
+                                      {data.favoritePosition}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              );
+                            }
+                          })}
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box sx={{ m: `1rem`, flexGrow: `1` }}>2</Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

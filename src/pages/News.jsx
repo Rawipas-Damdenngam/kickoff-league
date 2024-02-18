@@ -251,9 +251,9 @@ export default function News() {
             ))}
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3,minHeight:`100vh`, minWidth:`100vh` }}>
           <DrawerHeader />
-          <Box sx={{ height: 100 + "vh" }}>content</Box>
+          <Box sx={{  }}>content</Box>
         </Box>
       </Box>
     </APIProvider>

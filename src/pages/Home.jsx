@@ -1,6 +1,6 @@
 import "./Home.css";
 import { ToastContainer, toast } from "react-toastify";
-import Data from "../data/mockUP.json";
+import Data from "../../mockUP.json";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
@@ -76,6 +76,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -95,6 +96,7 @@ export default function Home() {
           console.log("Login Success");
           alert("Login Success");
           toast.success("Login Success");
+          navigate("/news");
         } else {
           console.log("Password incorrect");
           alert("Password incorrect");
@@ -144,12 +146,24 @@ export default function Home() {
     setNewAcc(true);
   };
 
+  const handleUsernameChange = (e) => {
+    let newValue = e.target.value;
+    setUsername(newValue);
+    console.log(username);
+  };
+
   const ShowSignIn = ({ signIn }) => {
     if (signIn) {
       return (
-        <Box >
+        <Box sx={{}}>
           <Box sx={{ mb: 2 }}>
-          <TextField onChange={(e)=> {setUsername(e.target.value), console.log(username)}}></TextField>
+            <TextField
+              sx={{ width: `100%` }}
+              label="Email"
+              placeholder="Enter email"
+              value={username}
+              onChange={handleUsernameChange}
+            ></TextField>
           </Box>
 
           <Box sx={{ mb: 2 }}>
@@ -185,16 +199,14 @@ export default function Home() {
                 alignItems: "stretch",
               }}
             >
-              <Link to="/news">
-                <Button
-                  type="button"
-                  onClick={proceedLogin}
-                  variant="contained"
-                  sx={{ p: `9px 16px`, width: `100%` }}
-                >
-                  Sign in
-                </Button>
-              </Link>
+              <Button
+                type="button"
+                onClick={proceedLogin}
+                variant="contained"
+                sx={{ p: `9px 16px`, width: `100%` }}
+              >
+                Sign in
+              </Button>
 
               <Links sx={{ mt: 1, textAlign: "center" }} underline="none">
                 Forgot your password?
@@ -212,7 +224,6 @@ export default function Home() {
               type="text"
               label="Email"
               placeholder="Enter email"
-
             ></TextField>
           </Box>
           <Box sx={{ mb: 2 }}>
@@ -419,13 +430,10 @@ export default function Home() {
                         <Button
                           sx={{ display: "flex", border: `1px solid grey` }}
                         >
-                          <GoogleIcon
-                            sx={{
-                              position: "absolute",
-                              left: `12px`,
-                              color: "green",
-                            }}
-                          ></GoogleIcon>
+                          <img
+                            src="src/assets/images/google-logo.jpeg"
+                            style={{width: 20 + "px", height: 20 + "px", position: "absolute", left: 12 + "px"}}
+                          ></img>
                           <Typography sx={{ color: "black" }}>
                             Continue with Google
                           </Typography>
@@ -538,7 +546,6 @@ export default function Home() {
               </ImageList>
             </Box>
           </Box>
-   
         </Box>
         <Box sx={{ height: 100 }}></Box>
         <Box component="footer" sx={{ display: "flex" }}>

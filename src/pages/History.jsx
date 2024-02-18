@@ -244,9 +244,9 @@ export default function KLHistory() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3,minHeight:`100vh`, minWidth:`100vh` }}>
         <DrawerHeader />
-        <Typography paragraph sx={{ height: 100 + "vh" }}>
+        <Typography paragraph sx={{}}>
           content here
         </Typography>
       </Box>

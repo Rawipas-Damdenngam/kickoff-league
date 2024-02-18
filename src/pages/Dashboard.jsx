@@ -242,7 +242,7 @@ export default function KLDashboard() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight: `100vh` }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight:`100vh`, minWidth:`100vh` }}>
         <DrawerHeader />
         <Typography>content</Typography>
       </Box>
