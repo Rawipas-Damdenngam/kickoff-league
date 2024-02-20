@@ -32,7 +32,8 @@ import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import zIndex from "@mui/material/styles/zIndex";
+import ShowSignIn from "../components/login/Signin";
+import ShowNewAcc from "../components/login/NewAcc";
 
 export default function Home() {
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -78,12 +79,17 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
   };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
 
   const handleMouseDownPassword = (e) => {
     e.preventDefault();
+    e.stopPropagation();
   };
 
   const proceedLogin = (e) => {
@@ -136,183 +142,19 @@ export default function Home() {
   };
 
   const [signIn, setSignIn] = useState(true);
+
   const handleSignIn = () => {
     setSignIn(true);
     setNewAcc(false);
   };
   const [newAcc, setNewAcc] = useState(false);
+
   const handleNewAcc = () => {
     setSignIn(false);
     setNewAcc(true);
   };
 
-  const handleUsernameChange = (e) => {
-    let newValue = e.target.value;
-    setUsername(newValue);
-    console.log(username);
-  };
-
-  const ShowSignIn = ({ signIn }) => {
-    if (signIn) {
-      return (
-        <Box sx={{}}>
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              sx={{ width: `100%` }}
-              label="Email"
-              placeholder="Enter email"
-              value={username}
-              onChange={handleUsernameChange}
-            ></TextField>
-          </Box>
-
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              id="password"
-              sx={{ width: `100%` }}
-              type={showPassword ? "text" : "password"}
-              label="Password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            ></TextField>
-          </Box>
-
-          <Box sx={{ mt: 2 }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "stretch",
-              }}
-            >
-              <Button
-                type="button"
-                onClick={proceedLogin}
-                variant="contained"
-                sx={{ p: `9px 16px`, width: `100%` }}
-              >
-                Sign in
-              </Button>
-
-              <Links sx={{ mt: 1, textAlign: "center" }} underline="none">
-                Forgot your password?
-              </Links>
-            </Box>
-          </Box>
-        </Box>
-      );
-    } else {
-      return (
-        <Box sx={{ width: `100%` }}>
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              sx={{ width: `100%` }}
-              type="text"
-              label="Email"
-              placeholder="Enter email"
-            ></TextField>
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              sx={{ width: `100%` }}
-              type="password"
-              label="Password"
-              placeholder="Create password"
-            ></TextField>
-            <Typography
-              sx={{
-                mt: 0.5,
-                fontSize: `12px`,
-                marginInlineStart: `1em`,
-                marginInlineEnd: `1em`,
-                color: `grey`,
-              }}
-            >
-              At least 8 characters
-            </Typography>
-            <Typography
-              sx={{
-                mt: 0.5,
-                fontSize: `12px`,
-                marginInlineStart: `1em`,
-                marginInlineEnd: `1em`,
-                color: `grey`,
-              }}
-            >
-              Mix of letters and numbers
-            </Typography>
-            <Typography
-              sx={{
-                mt: 0.5,
-                fontSize: `12px`,
-                marginInlineStart: `1em`,
-                marginInlineEnd: `1em`,
-                color: `grey`,
-              }}
-            >
-              At least 1 special character
-            </Typography>
-            <Typography
-              sx={{
-                mt: 0.5,
-                fontSize: `12px`,
-                marginInlineStart: `1em`,
-                marginInlineEnd: `1em`,
-                color: `grey`,
-              }}
-            >
-              At least 1 uppercase letter
-            </Typography>
-          </Box>
-
-          <Box sx={{ mt: 2 }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "stretch",
-              }}
-            >
-              <Link
-                to="/news"
-                style={{
-                  display: "flex",
-                  width: `100%`,
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ p: `9px 16px`, width: `100%` }}
-                >
-                  Submit
-                </Button>
-              </Link>
-
-              <Links sx={{ mt: 1, textAlign: "center" }} underline="none">
-                Term of service
-              </Links>
-            </Box>
-          </Box>
-        </Box>
-      );
-    }
-  };
+  console.log(signIn);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -403,7 +245,15 @@ export default function Home() {
                     </Box>
                     <Box id="sign in form">
                       <Box sx={{ p: 2 }}>
-                        <ShowSignIn signIn={signIn}></ShowSignIn>
+                        {signIn ? (
+                          <ShowSignIn
+                            username={handleUsernameChange}
+                            password={handlePasswordChange}
+                            proceedLogin={proceedLogin}
+                          ></ShowSignIn>
+                        ) : (
+                          <ShowNewAcc></ShowNewAcc>
+                        )}
                       </Box>
                     </Box>
                   </Box>
@@ -432,7 +282,12 @@ export default function Home() {
                         >
                           <img
                             src="src/assets/images/google-logo.jpeg"
-                            style={{width: 20 + "px", height: 20 + "px", position: "absolute", left: 12 + "px"}}
+                            style={{
+                              width: 20 + "px",
+                              height: 20 + "px",
+                              position: "absolute",
+                              left: 12 + "px",
+                            }}
                           ></img>
                           <Typography sx={{ color: "black" }}>
                             Continue with Google

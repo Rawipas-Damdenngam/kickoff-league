@@ -23,7 +23,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Icon, MenuItem, TextField, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -409,12 +409,30 @@ export default function FindPeople() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  
+  const [gender, setGender] = useState("");
+
+  const [filterResults, setFilterResults] = useState([Data.normalUser]);
 
   const handleSearch = (e) => {
     setName(e.target.value);
   };
-  //filter by name
+
+  const handleFilterGender = (e) => {
+    setGender(e.target.value);
+  };
+
+  useEffect(() => {
+    const result = Data.normalUser.filter((user) => {
+      return (
+        user.first_name_eng.toLowerCase().includes(name) ||
+        user.last_name_eng.toLowerCase().includes(name) ||
+        user.favoritePosition.toLowerCase().includes(name) ||
+        user.sex.toLowerCase().includes(gender)
+      );
+    });
+    console.log(result);
+    setFilterResults(result);
+  }, [name, gender]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -504,7 +522,7 @@ export default function FindPeople() {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, minHeight: `100vh`, minWidth: `100vh` }}
+        sx={{ flex: `1 1 auto`, p: 3, minHeight: `100vh`, minWidth: `100vh` }}
       >
         <DrawerHeader />
         <Box
@@ -575,7 +593,14 @@ export default function FindPeople() {
                   }}
                 >
                   <Box sx={{ width: `12%`, mr: `1rem` }}>
-                    <TextField fullWidth label="Gender" select sx={{}}>
+                    <TextField
+                      fullWidth
+                      label="Gender"
+                      select
+                      sx={{}}
+                      value={gender}
+                      onChange={handleFilterGender}
+                    >
                       <MenuItem value="All">All gender</MenuItem>
                       <MenuItem value="Male">Male</MenuItem>
                       <MenuItem value="Female">Female</MenuItem>
@@ -626,40 +651,59 @@ export default function FindPeople() {
                             <Box
                               sx={{
                                 display: `flex`,
+                                flex: `1 1 auto`,
                                 textTransform: `uppercase`,
                                 p: `14px 6px `,
                                 backgroundColor: `#1976d2`,
+                                justifyContent: `space-between`,
                               }}
                             >
                               <Typography
-                                sx={{ minWidth: `320px`, color: `white` }}
+                                sx={{
+                                  color: `white`,
+                                  flex: `1 1 200px`,
+                                  maxWidth: `500px`,
+                                }}
                               >
                                 Players
                               </Typography>
+
                               <Typography
-                                sx={{ minWidth: `250px`, color: `white` }}
+                                sx={{
+                                  flex: `1 1 auto`,
+                                  color: `white`,
+                                }}
                               >
                                 Position
                               </Typography>
                               <Typography
-                                sx={{ minWidth: `250px`, color: `white` }}
+                                sx={{ flex: `1 1 auto`, color: `white` }}
                               >
                                 Gender
                               </Typography>
                               <Typography
-                                sx={{ minWidth: `220px`, color: `white` }}
+                                sx={{ flex: `1 1 auto`, color: `white` }}
                               >
                                 Age
                               </Typography>
                               <Typography
-                                sx={{ minWidth: `200px`, color: `white` }}
+                                sx={{ flex: `1 1 auto`, color: `white` }}
                               >
                                 Country
                               </Typography>
                             </Box>
                           </Box>
-                          <Box id="table-body">
-                            {Data.normalUser.map((items, index) => {
+                          <Box
+                            id="table-body"
+                            sx={{
+                              display: `flex`,
+                              flexDirection: `column`,
+                              flex: `1 1 auto`,
+                              justifyContent: `space-between`,
+                              alignItems: `stretch`,
+                            }}
+                          >
+                            {filterResults.map((items, index) => {
                               const currentDate = new Date();
                               const birthDate = new Date(items.date_of_birth);
                               const age =
@@ -671,6 +715,7 @@ export default function FindPeople() {
                                   key={index}
                                   sx={{
                                     display: `flex`,
+                                    flex: `1 1 auto`,
                                     borderBottom: `1px solid black`,
                                     ":hover": {
                                       backgroundColor: `lightblue`,
@@ -680,6 +725,8 @@ export default function FindPeople() {
                                 >
                                   <Box
                                     sx={{
+                                      display: `flex`,
+                                      flex: `0 1 auto`,
                                       width: `100px`,
                                       height: `100px`,
                                       p: `1rem`,
@@ -702,7 +749,8 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      minWidth: `230px`,
+                                      flex: `1 1 100px`,
+                                      maxWidth: `270px`,
                                     }}
                                   >
                                     <Box sx={{}}>
@@ -717,7 +765,8 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      minWidth: `260px`,
+                                      flex: `1 1 100px`,
+                                      maxWidth: `240px`,
                                     }}
                                   >
                                     <Box>
@@ -730,7 +779,8 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      minWidth: `240px`,
+                                      flex: `1 1 100px`,
+                                      maxWidth: `230px`,
                                     }}
                                   >
                                     <Box>
@@ -743,7 +793,8 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      minWidth: `220px`,
+                                      flex: `1 1 auto`,
+                                      maxWidth: `200px`,
                                     }}
                                   >
                                     <Box>
@@ -756,7 +807,7 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      minWidth: `210px`,
+                                      flex: `1 1 auto`,
                                     }}
                                   >
                                     <Box>
