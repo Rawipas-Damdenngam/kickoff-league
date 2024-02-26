@@ -17,6 +17,8 @@ import Profile from "./pages/Profile.jsx";
 import Register from "./pages/Register.jsx";
 import Achievement from "./pages/Achievement.jsx";
 import Home from "./pages/Home.jsx";
+import TeamProvider from "./components/context/TeamContext.jsx";
+import TeamInfo from "./pages/TeamInfo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -75,12 +77,18 @@ const router = createBrowserRouter([
     path: "/achievement",
     element: <Achievement />,
   },
+  {
+    path: "/teamInfo",
+    element: <TeamInfo />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router}>
-      <App />
+      <TeamProvider>
+        <App />
+      </TeamProvider>
     </RouterProvider>
   </React.StrictMode>
 );

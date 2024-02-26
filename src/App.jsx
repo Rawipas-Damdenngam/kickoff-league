@@ -1,9 +1,8 @@
-import { useState } from "react";
-import Appbar from "./components/appBar/Appbar";
-import Drawer from "./components/drawer/Drawer";
 import "./App.css";
 import { Box } from "@mui/material";
 import Home from "./pages/Home";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -11,8 +10,8 @@ function App() {
       <Box className="layout-inner">
         <Home></Home>
       </Box>
+      <ToastContainer />
     </Box>
   );
 }
-
 export default App;

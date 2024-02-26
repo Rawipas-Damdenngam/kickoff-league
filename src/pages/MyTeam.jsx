@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -24,10 +23,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
+import CreateTeam from "../components/myTeam/CreateTeam";
+import MyteamList from "../components/myTeam/MyteamList";
+import TeamContext from "../components/context/TeamContext";
 
 const drawerWidth = 240;
 
@@ -157,6 +159,20 @@ const Drawer = styled(MuiDrawer, {
 export default function MyTeam() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [createTeamOpen, setCreateTeamOpen] = useState(false);
+  const [createTeamTab, setCreateTeamTab] = useState(true);
+  const [joinTeamTab, setJoinTeamTab] = useState(false);
+  const [teams, setTeams] = useState([]);
+  const [name, setName] = useState("");
+
+  const handleTeamSubmit = (e) => {
+    e.preventDefault();
+    setTeams((prev) => [...prev, name]);
+    setCreateTeamOpen(false);
+  };
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -164,6 +180,22 @@ export default function MyTeam() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleCreateTeam = () => {
+    setCreateTeamOpen(true);
+  };
+  const handleCloseCreateTeam = () => {
+    setCreateTeamOpen(false);
+  };
+
+  const handleCreateTeamTab = () => {
+    setCreateTeamTab(true);
+    setJoinTeamTab(false);
+  };
+  const handleJoinTeamTab = () => {
+    setCreateTeamTab(false);
+    setJoinTeamTab(true);
   };
 
   return (
@@ -193,10 +225,10 @@ export default function MyTeam() {
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
           <Link to={"/"}>
-              <Button variant="contained" sx={{ backgroundColor: `` }}>
-                <LogoutIcon sx={{}}></LogoutIcon>
-              </Button>
-            </Link>
+            <Button variant="contained" sx={{ backgroundColor: `` }}>
+              <LogoutIcon sx={{}}></LogoutIcon>
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -244,14 +276,86 @@ export default function MyTeam() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 ,minHeight:`100vh`, minWidth:`100vh`}}>
+      <Box
+        component="main"
+        sx={{
+          display: `flex`,
+          flexDirection: `column`,
+          flexGrow: 1,
+          p: 3,
+          minHeight: `100vh`,
+          minWidth: `100vh`,
+        }}
+      >
         <DrawerHeader />
-        <Typography paragraph sx={{ }}>
-          content here
-        </Typography>
+        <Box
+          sx={{
+            display: `flex`,
+            justifyContent: `flex-end`,
+          }}
+        >
+          <Button onClick={handleCreateTeam} variant="contained">
+            Create team
+          </Button>
+        </Box>
+        <Box
+          id="team-tab"
+          sx={{
+            display: `flex`,
+            py: `0.5rem`,
+            gap: `1rem`,
+            borderBottom: `1px solid`,
+          }}
+        >
+          <Box>
+            <Button
+              sx={{ color: `${createTeamTab ? "primary" : "black"}` }}
+              onClick={handleCreateTeamTab}
+            >
+              My team
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              sx={{ color: `${joinTeamTab ? "primary" : "black"}` }}
+              onClick={handleJoinTeamTab}
+            >
+              Team joined
+            </Button>
+          </Box>
+        </Box>
+        <Box id="team-list">
+          <CreateTeam
+            open={createTeamOpen}
+            handleClose={handleCloseCreateTeam}
+            submit={handleTeamSubmit}
+            handleNameChange={handleNameChange}
+          ></CreateTeam>
+          <Box
+            sx={{
+              height: `100%`,
+              width: `100%`,
+              flex: ` 1 1 auto`,
+              flexGrow: `0`,
+              flexWrap: `wrap`,
+              overflowY: `auto`,
+              overflowX: `hidden`,
+              p: `1rem`,
+              display: `flex`,
+              gap: `1rem`,
+            }}
+          >
+            <MyteamList teams={teams}></MyteamList>
+            {/* <Button
+              onClick={() => {
+                console.log(teams);
+              }}
+            >
+              test team
+            </Button> */}
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
 }
-
-

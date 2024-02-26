@@ -11,10 +11,9 @@ import Data from "../../../mockUP.json";
 import { toast } from "react-toastify";
 
 export default function ShowSignIn(props) {
-  const {username , password, proceedLogin } = props;
+  const { username, password, proceedLogin } = props;
 
   const [showPassword, setShowPassword] = useState(false);
-
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -25,9 +24,6 @@ export default function ShowSignIn(props) {
     e.stopPropagation();
   };
 
-
-  
-
   return (
     <Box sx={{}}>
       <Box sx={{ mb: 2 }}>
@@ -35,7 +31,9 @@ export default function ShowSignIn(props) {
           sx={{ width: `100%` }}
           label="Email"
           placeholder="Enter email"
+          autoFocus
           onChange={username}
+          onKeyDown={(e) => (e.key === "Enter" ? proceedLogin(e) : null)}
         ></TextField>
       </Box>
 
@@ -47,6 +45,7 @@ export default function ShowSignIn(props) {
           label="Password"
           placeholder="Enter password"
           onChange={password}
+          onKeyDown={(e) => (e.key === "Enter" ? proceedLogin(e) : null)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -74,6 +73,7 @@ export default function ShowSignIn(props) {
           <Button
             type="button"
             onClick={proceedLogin}
+            onKeyDown={(e) => (e.key === "Enter" ? proceedLogin(e) : null)}
             variant="contained"
             sx={{ p: `9px 16px`, width: `100%` }}
           >

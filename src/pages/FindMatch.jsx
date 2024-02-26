@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import "./FindMatch.css";
+import FindMatchList from "../components/findMatch/FindMatchList";
+import MatchInfo from "../components/findMatch/MatchInfo";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -15,7 +17,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
@@ -250,9 +251,11 @@ export default function FindMatch() {
   const [showInfo, setShowInfo] = useState(false);
 
   const handleShowInfoOpen = () => {
+    console.log(showInfo);
     setShowInfo(true);
   };
   const handleShowInfoClose = () => {
+    console.log(showInfo);
     setShowInfo(false);
   };
 
@@ -277,110 +280,6 @@ export default function FindMatch() {
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
-  };
-
-  const MatchInfo = () => {
-    return (
-      <Box>
-        <Modal open={showInfo} onClose={handleShowInfoClose}>
-          <Box sx={style}>
-            <Box sx={{ overflowY: `auto`, overflowX: `hidden` }}>
-              <Box sx={{ flexGrow: `0` }}>
-                <Box
-                  sx={{
-                    display: `flex`,
-                    position: `relative`,
-                    height: `300px`,
-                  }}
-                >
-                  <img
-                    className="bg4"
-                    src="src/assets/images/grass_field.jpeg"
-                  ></img>
-                </Box>
-                <Box
-                  sx={{
-                    px: `40px`,
-                    display: `flex`,
-                    position: `relative`,
-                    gap: `46px`,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      flex: `1 1 100%`,
-                      width: `100%`,
-                      minWidth: `0`,
-                    }}
-                  >
-                    <Box>
-                      <Box sx={{ my: `0.75rem` }}>
-                        <Typography variant="h4">
-                          {Data.Competition[0].name}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <hr></hr>
-                    <Box>
-                      <Typography variant="h5">
-                        {Data.Competition[0].format}
-                      </Typography>
-
-                      <Typography variant="h5" sx={{}}>
-                        Age over: {Data.Competition[0].age_over}
-                      </Typography>
-                      <Typography variant="h5" sx={{}}>
-                        Age under: {Data.Competition[0].age_under}
-                      </Typography>
-                      <Typography variant="h5" sx={{}}>
-                        Status: {Data.Competition[0].status}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ mt: `1rem` }}>
-                      <Box>
-                        <Typography variant="body1" sx={{}}>
-                          {Data.Competition[0].description}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography
-                          variant="body1"
-                          sx={{ mt: `1rem`, mb: `2rem`, height: `100px` }}
-                        >
-                          {Data.addresses[25].house_number}{" "}
-                          {Data.addresses[25].village}{" "}
-                          {Data.addresses[25].subdistrict}{" "}
-                          {Data.addresses[25].district}{" "}
-                          {Data.addresses[25].postal_code}{" "}
-                          {Data.addresses[25].country}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box sx={{ minWidth: `230px`, flex: `1 0 27%` }}>
-                    <Box sx={{ position: `sticky`, top: `20px` }}>
-                      <Box
-                        sx={{
-                          display: `flex`,
-                          flexDirection: `column`,
-                          gap: `16px`,
-                        }}
-                      >
-                        <Box sx={{ pt: `1rem` }}>
-                          <Button variant="contained" sx={{ width: `100%` }}>
-                            Request a Match
-                          </Button>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Modal>
-      </Box>
-    );
   };
 
   return (
@@ -542,6 +441,7 @@ export default function FindMatch() {
                     <TextField
                       select
                       label="Status"
+                      defaultValue={""}
                       sx={{ my: `0.5rem`, minWidth: `150px`, width: `auto` }}
                     >
                       <MenuItem value="Coming soon">Coming soon</MenuItem>
@@ -559,6 +459,7 @@ export default function FindMatch() {
                     <TextField
                       select
                       label="Field surface"
+                      defaultValue={""}
                       sx={{ my: `0.5rem`, minWidth: `150px`, width: `auto` }}
                     >
                       <MenuItem value="Natural grass">Natural grass</MenuItem>
@@ -579,6 +480,7 @@ export default function FindMatch() {
                     <TextField
                       select
                       label="Province"
+                      defaultValue={""}
                       sx={{ my: `0.5rem`, minWidth: `150px`, width: `auto` }}
                     >
                       {provinces.map((province, index) => (
@@ -649,65 +551,12 @@ export default function FindMatch() {
                   >
                     {Data.Competition.map((competition, index) => {
                       return (
-                        <Box key={index}>
-                          <Card
-                            onClick={handleShowInfoOpen}
-                            sx={{
-                              maxWidth: `345px`,
-                              ":hover": { backgroundColor: `lightblue` },
-                              cursor: `pointer`,
-                            }}
-                          >
-                            <CardMedia
-                              component="img"
-                              height="194"
-                              image={`${
-                                competition.id % 2 == 0
-                                  ? "src/assets/images/grass_field.jpeg"
-                                  : "src/assets/images/grass_field2.jpeg"
-                              }`}
-                            ></CardMedia>
-                            <CardContent sx={{}}>
-                              <Typography variant="h6">
-                                {competition.name}
-                              </Typography>
-                              <Box sx={{ display: `flex` }}>
-                                <Typography variant="body2">
-                                  {competition.format}
-                                </Typography>
-                              </Box>
-                              <Typography variant="body2" sx={{}}>
-                                Status: {competition.status}
-                              </Typography>
-                              <Box sx={{ display: `flex` }}>
-                                <Typography variant="body2">
-                                  Age over: {competition.age_over} |
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  sx={{ pl: `0.5rem` }}
-                                >
-                                  Resgistered: {competition.teamRegisted.length}{" "}
-                                  / {competition.numberOfTeam}
-                                </Typography>
-                              </Box>
-                              <Box sx={{ display: `flex` }}>
-                                <Typography variant="body2">
-                                  Min players: {competition.numOfPlayer_min} |
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  sx={{ pl: `0.5rem` }}
-                                >
-                                  Max player: {competition.numOfPlayer_max}
-                                </Typography>
-                              </Box>
-                              <Typography variant="body2">
-                                Match time: {competition.matchTime} min
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Box>
+                        <FindMatchList
+                          key={index}
+                          competition={competition}
+                          infoOpen={handleShowInfoOpen}
+                          infoClose={handleShowInfoClose}
+                        ></FindMatchList>
                       );
                     })}
                   </Box>
@@ -726,7 +575,14 @@ export default function FindMatch() {
               <Box sx={{ width: `100%`, height: `100%` }}>
                 <img className="bg3"></img>
               </Box>
-              {showInfo ? <MatchInfo></MatchInfo> : null}
+              {showInfo ? (
+                <MatchInfo
+                  showInfo={showInfo}
+                  showInfoClose={handleShowInfoClose}
+                  Data={Data}
+                  style={style}
+                ></MatchInfo>
+              ) : null}
             </Box>
           </Box>
         </Box>

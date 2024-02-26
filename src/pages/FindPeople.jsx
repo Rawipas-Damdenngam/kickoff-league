@@ -425,14 +425,12 @@ export default function FindPeople() {
     const result = Data.normalUser.filter((user) => {
       return (
         user.first_name_eng.toLowerCase().includes(name) ||
-        user.last_name_eng.toLowerCase().includes(name) ||
-        user.favoritePosition.toLowerCase().includes(name) ||
-        user.sex.toLowerCase().includes(gender)
+        user.last_name_eng.toLowerCase().includes(name) 
       );
     });
     console.log(result);
     setFilterResults(result);
-  }, [name, gender]);
+  }, [name,]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -459,15 +457,9 @@ export default function FindPeople() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, width: 200 }}
-          >
+          <Typography variant="h6" sx={{ flexGrow: 1, minWidth: `200px` }}>
             FindPeople
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
           <Link to={"/"}>
             <Button variant="contained" sx={{ backgroundColor: `` }}>
               <LogoutIcon sx={{}}></LogoutIcon>
@@ -626,6 +618,7 @@ export default function FindPeople() {
                       label="National"
                       select
                       sx={{ minWidth: `150px` }}
+                      defaultValue=""
                     >
                       {countries.map((items, index) => {
                         return (

@@ -67,7 +67,7 @@ export default function Home() {
     width: 100 + "%",
     bgcolor: "background.paper",
     border: "1px solid #000",
-    borderRadius: 4,
+    borderRadius: 10,
     boxShadow: 24,
     height: "auto",
     maxWidth: 448 + "px",
@@ -86,35 +86,37 @@ export default function Home() {
     setPassword(e.target.value);
   };
 
-
   const handleMouseDownPassword = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const proceedLogin = (e) => {
+  function proceedLogin(e) {
     e.preventDefault();
+    e.stopPropagation();
 
     if (validate()) {
+
+      
       let user = Data.users.find((user) => user.email === username);
       if (user) {
         if (user.password_hash === password) {
           console.log("Login Success");
-          alert("Login Success");
-          toast.success("Login Success");
+          // alert("Login Success");
+          toast.success("Login Success", { position: "top-center" });
           navigate("/news");
         } else {
           console.log("Password incorrect");
-          alert("Password incorrect");
-          toast.error("Password incorrect");
+          // alert("Password incorrect");
+          toast.error("Password is incorrect");
         }
       } else {
         console.log("User not found");
-        alert("User not found");
+        // alert("User not found");
         toast.error("User not found");
       }
     }
-  };
+  }
 
   const validate = () => {
     let result = true;
@@ -122,14 +124,14 @@ export default function Home() {
     if (username === "" || username === null) {
       result = false;
       console.log("enter mail");
-      alert("Please Enter Email");
+      // alert("Please Enter Email");
       toast.warn("Please Enter Email");
     }
     if (password === "" || password === null) {
       result = false;
       console.log("enter pass");
-      alert("Please Enter Password");
-      toast.warning("Please Enter Password");
+      // alert("Please Enter Password");
+      toast.warn("Please Enter Password");
     }
     return result;
   };
@@ -165,17 +167,17 @@ export default function Home() {
             component="section"
             sx={{ display: "flex", gap: 2, px: 2, flex: `1 0` }}
           >
-            <Link to="findMatch">
+            <Link to="findMatch" style={{ textDecoration: `none` }}>
               <Typography variant="h6" component="div" sx={{ color: "white" }}>
                 ค้นหาการแข่งขัน
               </Typography>
             </Link>
-            <Link to="findTeam">
+            <Link to="findTeam" style={{ textDecoration: `none` }}>
               <Typography variant="h6" component="div" sx={{ color: "white" }}>
                 ค้นหาทีม
               </Typography>
             </Link>
-            <Link to="findPeople">
+            <Link to="findPeople" style={{ textDecoration: `none` }}>
               <Typography variant="h6" component="div" sx={{ color: "white" }}>
                 ค้นหาผู้คน
               </Typography>
@@ -420,6 +422,7 @@ export default function Home() {
           </Box>
         </Box>
       </Box>
+      <ToastContainer />
     </Box>
   );
 }
