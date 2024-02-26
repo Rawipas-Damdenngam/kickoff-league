@@ -1,0 +1,11 @@
+.bg {
+  background-image: url(".././assets/images/grass_field.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}

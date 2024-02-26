@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
-import "./Profile.css";
+import "./TeamInfo.css";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -37,6 +37,10 @@ import {
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Data from "../../mockUP.json";
+import TeamInfoOverview from "../components/teamInfo/Team_info_overview";
+import TeamInfoMember from "../components/teamInfo/Team_info_member";
+import TeamInfoCompetition from "../components/teamInfo/Team_info_competition";
+import TeamInfoResult from "../components/teamInfo/Team_info_result";
 
 const drawerWidth = 240;
 
@@ -293,9 +297,39 @@ const Drawer = styled(MuiDrawer, {
 //   );
 // };
 
-export default function Profile() {
+export default function TeamInfo(props) {
+  const { teamName } = props;
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [overView, setOverView] = useState(true);
+  const [member, setMember] = useState(false);
+  const [competition, setCompetition] = useState(false);
+  const [result, setResult] = useState(false);
+
+  const handleOverviewTab = () => {
+    setOverView(true);
+    setMember(false);
+    setCompetition(false);
+    setResult(false);
+  };
+  const handleMemberTab = () => {
+    setOverView(false);
+    setMember(true);
+    setCompetition(false);
+    setResult(false);
+  };
+  const handleCompetitionTab = () => {
+    setOverView(false);
+    setMember(false);
+    setCompetition(true);
+    setResult(false);
+  };
+  const handleResultTab = () => {
+    setOverView(false);
+    setMember(false);
+    setCompetition(false);
+    setResult(true);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -304,6 +338,7 @@ export default function Profile() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  console.log(teamName);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -328,7 +363,7 @@ export default function Profile() {
             component="div"
             sx={{ flexGrow: 1, width: 200 }}
           >
-            Profile
+            Team Info
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
           <Link to={"/"}>
@@ -383,7 +418,15 @@ export default function Profile() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, minHeight: `100vh` }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          minHeight: `100vh`,
+          pb: `5rem`,
+          overflowX: `hidden`,
+        }}
+      >
         <DrawerHeader />
         <Box>
           <Box
@@ -404,7 +447,7 @@ export default function Profile() {
                 left: `0`,
               }}
             >
-              <Box className="bg2"></Box>
+              <Box className="bg5"></Box>
             </Box>
             <Box sx={{ mt: `auto`, position: `relative` }}>
               <Box
@@ -420,12 +463,11 @@ export default function Profile() {
                     sx={{
                       display: `block`,
                       position: `relative`,
-                      width: `100%`,
-                      height: `0`,
+                      width: `200px`,
                     }}
                   >
                     <img
-                      src="src/assets/images/profile1.jpeg"
+                      src="src/assets/images/liverPool.jpeg"
                       style={{
                         top: `0`,
                         left: `0`,
@@ -439,18 +481,18 @@ export default function Profile() {
                 </Box>
                 <Box sx={{ m: `1rem` }}>
                   <Box>
-                    {Data.normalUser.map((user, index) => {
-                      if (user.id === 1)
-                        return (
-                          <Typography
-                            key={index}
-                            variant="h3"
-                            sx={{ color: `white` }}
-                          >
-                            {user.first_name_eng + " " + user.last_name_eng}
-                          </Typography>
-                        );
-                    })}
+                    {/* {teamName.map((name, index) => {
+                        return ( */}
+                    <Typography
+                      // key={index}
+                      variant="h3"
+                      sx={{ color: `white` }}
+                    >
+                      {/* {name[0]} */}
+                      Team name
+                    </Typography>
+                    {/* );
+                    })} */}
                   </Box>
                 </Box>
               </Box>
@@ -475,9 +517,12 @@ export default function Profile() {
                         fontSize: `1.25rem`,
                         fontWeight: `bold`,
                         textTransform: `uppercase`,
+                        color: `${overView ? `#1976d2` : `black`}`,
+                        cursor: `pointer`,
                       }}
+                      onClick={handleOverviewTab}
                     >
-                      About
+                      Overview
                     </Typography>
                   </Box>
                   <Box>
@@ -487,9 +532,12 @@ export default function Profile() {
                         fontSize: `1.25rem`,
                         fontWeight: `bold`,
                         textTransform: `uppercase`,
+                        color: `${member ? `#1976d2` : `black`}`,
+                        cursor: `pointer`,
                       }}
+                      onClick={handleMemberTab}
                     >
-                      Activity
+                      member
                     </Typography>
                   </Box>
                   <Box>
@@ -499,9 +547,27 @@ export default function Profile() {
                         fontSize: `1.25rem`,
                         fontWeight: `bold`,
                         textTransform: `uppercase`,
+                        color: `${competition ? `#1976d2` : `black`}`,
+                        cursor: `pointer`,
                       }}
+                      onClick={handleCompetitionTab}
                     >
-                      social media
+                      competition
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography
+                      sx={{
+                        p: `1.5rem`,
+                        fontSize: `1.25rem`,
+                        fontWeight: `bold`,
+                        textTransform: `uppercase`,
+                        color: `${result ? `#1976d2` : `black`}`,
+                        cursor: `pointer`,
+                      }}
+                      onClick={handleResultTab}
+                    >
+                      result
                     </Typography>
                   </Box>
                 </Box>
@@ -512,165 +578,26 @@ export default function Profile() {
         <hr></hr>
         <Box sx={{}}>
           <Box sx={{}}>
-            <Box sx={{ mt: `2rem`, px: `4rem` }}>
+            <Box sx={{ mt: `2rem`, px: `2rem` }}>
               <Box sx={{ display: `flex` }}>
                 <Box
                   sx={{
-                    m: `1rem`,
                     minHeight: `16rem`,
-                    flexGrow: `1`,
                     fontSize: `16px`,
+                    flexGrow: `1`,
                   }}
                 >
-                  <Box>
-                    <Box sx={{ lineHeight: `1.5` }}>
-                      <Box sx={{ width: `100%` }}>
-                        <Box sx={{ verticalAlign: `middle` }}>
-                          {Data.normalUser.map((data, index) => {
-                            if (data.id === 1) {
-                              const currentDate = new Date();
-                              const birthDate = new Date(data.date_of_birth);
-                              const age =
-                                currentDate.getFullYear() -
-                                birthDate.getFullYear();
-                              console.log(currentDate);
-                              return (
-                                <Box key={index}>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ pb: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Nationality
-                                    </Typography>
-                                    <Typography
-                                      sx={{ pb: `1rem`, textAlign: `right` }}
-                                    >
-                                      {data.nationality}
-                                    </Typography>
-                                  </Box>
-                                  <Box>
-                                    {Data.addresses.map((address, index) => {
-                                      if (address.id === 1)
-                                        return (
-                                          <Box
-                                            key={index}
-                                            sx={{
-                                              display: `flex`,
-                                              flexDirection: `row`,
-                                              justifyContent: `space-between`,
-                                              borderBottom: `1px solid black`,
-                                              borderWidth: `0.125rem`,
-                                              borderColor: `#e5e8ed;`,
-                                            }}
-                                          >
-                                            <Typography
-                                              sx={{
-                                                py: `1rem`,
-                                                textAlign: `initial`,
-                                              }}
-                                            >
-                                              Address
-                                            </Typography>
-                                            <Typography
-                                              sx={{
-                                                py: `1rem`,
-                                                textAlign: `right`,
-                                              }}
-                                            >
-                                              {address.village +
-                                                "," +
-                                                " " +
-                                                address.subdistrict +
-                                                "," +
-                                                " " +
-                                                address.district}
-                                            </Typography>
-                                          </Box>
-                                        );
-                                    })}
-                                  </Box>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Gender
-                                    </Typography>
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `right` }}
-                                    >
-                                      {data.sex}
-                                    </Typography>
-                                  </Box>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Age
-                                    </Typography>
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `right` }}
-                                    >
-                                      {age}
-                                    </Typography>
-                                  </Box>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Position
-                                    </Typography>
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `right` }}
-                                    >
-                                      {data.favoritePosition}
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                              );
-                            }
-                          })}
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Box>
+                  {overView ? (
+                    <TeamInfoOverview></TeamInfoOverview>
+                  ) : member ? (
+                    <TeamInfoMember></TeamInfoMember>
+                  ) : competition ? (
+                    <TeamInfoCompetition></TeamInfoCompetition>
+                  ) : (
+                    <TeamInfoResult></TeamInfoResult>
+                  )}
                 </Box>
-                <Box sx={{ m: `1rem`, flexGrow: `1` }}>2</Box>
+                {/* <Box sx={{ m: `1rem`, flexGrow: `1` }}>2</Box> */}
               </Box>
             </Box>
           </Box>

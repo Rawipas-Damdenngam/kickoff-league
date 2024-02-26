@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -27,6 +26,7 @@ import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import { useState } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
@@ -168,7 +168,7 @@ export default function KLDashboard() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} color="success">
+      <AppBar position="fixed" open={open} color="primary">
         <Toolbar sx={{ display: "flex" }}>
           <IconButton
             color="inherit"
@@ -191,11 +191,9 @@ export default function KLDashboard() {
             Dashboard
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
+          <Link to="/"></Link>
           <Button variant="contained" sx={{}}>
-            Register
-          </Button>
-          <Button variant="contained" sx={{ marginLeft: 2 }}>
-            Login
+            <LogoutIcon></LogoutIcon>
           </Button>
         </Toolbar>
       </AppBar>
@@ -244,13 +242,10 @@ export default function KLDashboard() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, minHeight:`100vh`, minWidth:`100vh` }}>
         <DrawerHeader />
-        <Typography paragraph sx={{ height: 100 + "vh" }}>
-          content here
-        </Typography>
+        <Typography>content</Typography>
       </Box>
     </Box>
   );
 }
-

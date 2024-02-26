@@ -26,6 +26,7 @@ import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import { useState } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -167,7 +168,7 @@ export default function Schedule() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} color="success">
+      <AppBar position="fixed" open={open} color="primary">
         <Toolbar sx={{ display: "flex" }}>
           <IconButton
             color="inherit"
@@ -190,12 +191,11 @@ export default function Schedule() {
             Schedule
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
-          <Button variant="contained" sx={{}}>
-            Register
-          </Button>
-          <Button variant="contained" sx={{ marginLeft: 2 }}>
-            Login
-          </Button>
+          <Link to={"/"}>
+              <Button variant="contained" sx={{ backgroundColor: `` }}>
+                <LogoutIcon sx={{}}></LogoutIcon>
+              </Button>
+            </Link>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -243,9 +243,9 @@ export default function Schedule() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 ,minHeight:`100vh`, minWidth:`100vh`}}>
         <DrawerHeader />
-        <Typography paragraph sx={{ height: 100 + "vh" }}>
+        <Typography paragraph sx={{  }}>
           content here
         </Typography>
       </Box>

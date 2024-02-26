@@ -26,14 +26,7 @@ import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import { useState } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  Pin,
-  InfoWindow,
-} from "@vis.gl/react-google-maps";
-
+import LogoutIcon from "@mui/icons-material/Logout";
 const drawerWidth = 240;
 
 const drawerItems = [
@@ -172,93 +165,90 @@ export default function News() {
   };
 
   return (
-    <APIProvider>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open} color="success">
-          <Toolbar sx={{ display: "flex" }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: "none" }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, width: 200 }}
-            >
-              News
-            </Typography>
-            <Box sx={{ paddingLeft: 110 }}></Box>
-            <Link to={"/register"}>
-              <Button variant="contained" sx={{}}>
-                Register
-              </Button>
-            </Link>
-
-            <Button variant="contained" sx={{ marginLeft: 2 }}>
-              Login
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={open} color="primary">
+        <Toolbar sx={{ display: "flex" }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              marginRight: 5,
+              ...(open && { display: "none" }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, width: 200 }}
+          >
+            News
+          </Typography>
+          <Box sx={{ paddingLeft: 110 }}></Box>
+          <Link to={"/"}>
+            <Button variant="contained" sx={{ backgroundColor: `` }}>
+              <LogoutIcon sx={{}}></LogoutIcon>
             </Button>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <DrawerHeader>
-            <Box>
-              <AccountCircleIcon sx={{ fontSize: 35 }}></AccountCircleIcon>
-            </Box>
-            <Box sx={{ paddingLeft: 2 }}>
-              <Box>name</Box>
-              <Box>status</Box>
-            </Box>
-            <Box sx={{ paddingLeft: 7 }}></Box>
-            <IconButton onClick={handleDrawerClose}>
-              <MenuIcon />
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <List>
-            {drawerItems.map((items) => (
-              <Link to={items.link} key={items.title}>
-                <ListItem disablePadding sx={{ display: "block" }}>
-                  <ListItemButton
+          </Link>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
+          <Box>
+            <AccountCircleIcon sx={{ fontSize: 35 }}></AccountCircleIcon>
+          </Box>
+          <Box sx={{ paddingLeft: 2 }}>
+            <Box>name</Box>
+            <Box>status</Box>
+          </Box>
+          <Box sx={{ paddingLeft: 7 }}></Box>
+          <IconButton onClick={handleDrawerClose}>
+            <MenuIcon />
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {drawerItems.map((items) => (
+            <Link to={items.link} key={items.title}>
+              <ListItem disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
                     sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
                     }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {items.icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={items.title}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            ))}
-          </List>
-        </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <DrawerHeader />
-          <Box sx={{ height: 100 + "vh" }}>content</Box>
-        </Box>
+                    {items.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={items.title}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ))}
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, minHeight: `100vh`, minWidth: `100vh` }}
+      >
+        <DrawerHeader />
+        <Box sx={{}}>content</Box>
       </Box>
-    </APIProvider>
+    </Box>
   );
 }
