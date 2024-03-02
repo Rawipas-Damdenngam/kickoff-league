@@ -35,22 +35,22 @@ export default function ImageCropper(props) {
   const [file, setFile] = useState("");
 
   const resizeFile = (file) =>
-  new Promise((resolve) => {
-    Resizer.imageFileResizer(
-      file,
-      200,
-      200,
-      "jpeg",
-      100,
-      0,
-      (uri) => {
-        resolve(uri);
-      },
-      "base64"
-    );
-  });
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        200,
+        200,
+        "jpeg",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "base64"
+      );
+    });
 
-  async function handleFileChange(e){
+  async function handleFileChange(e) {
     const file = e.target.files?.[0];
     const resizedFile = await resizeFile(file);
     setFile(resizedFile);
@@ -76,7 +76,7 @@ export default function ImageCropper(props) {
     });
 
     reader.readAsDataURL(file);
-  };
+  }
 
   const onImageLoad = (e) => {
     const { width, height } = e.currentTarget;
@@ -104,7 +104,7 @@ export default function ImageCropper(props) {
         alignItems: `center`,
       }}
     >
-      <Typography variant="h5">edit profile</Typography>
+      <Typography variant="h5">Edit your profile</Typography>
       <Button
         variant="contained"
         component="label"
@@ -125,7 +125,7 @@ export default function ImageCropper(props) {
             onChange={(pixelCrop, percentCrop) => setCrop(percentCrop)}
             aspect={aspectRatio}
             minWidth={minDimension}
-            style={{ margin: `1rem`,}}
+            style={{ margin: `1rem` }}
           >
             <img
               ref={imgRef}

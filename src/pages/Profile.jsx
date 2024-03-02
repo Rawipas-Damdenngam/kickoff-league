@@ -167,135 +167,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-// const [editInfo, setEditInfo] = useState(true);
 
-// const handleNextClick = () => {
-//   return setEditInfo(false);
-// };
-
-// const DisplayEditInfo = ({ editInfo }) => {
-//   if (editInfo) {
-//     return (
-//       <Box
-//         component="container"
-//         sx={{ display: "flex", flexDirection: "column" }}
-//       >
-//         <FormControl component="form" sx={{ alignItems: "center", p: 3 }}>
-//           <Box>
-//             <AccountCircleIcon sx={{ fontSize: 90 }}></AccountCircleIcon>
-//           </Box>
-//           <Box
-//             component="edit_info"
-//             sx={{
-//               display: "flex",
-//               flexDirection: "row",
-//               gap: 5,
-//               width: `100%`,
-//               justifyContent: "center",
-//             }}
-//           >
-//             <Box sx={{}}>
-//               <Typography>Name</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//             <Box>
-//               <Typography>Last name</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//           </Box>
-//           <Box
-//             component="edit_info"
-//             sx={{
-//               display: "flex",
-//               flexDirection: "row",
-//               gap: 5,
-//               width: `100%`,
-//               justifyContent: "center",
-//             }}
-//           >
-//             <Box sx={{}}>
-//               <Typography>Passoword</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//             <Box>
-//               <Typography>Confirm password</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//           </Box>
-//           <Box
-//             component="edit_info"
-//             sx={{
-//               display: "flex",
-//               flexDirection: "row",
-//               gap: 5,
-//               width: `100%`,
-//               justifyContent: "center",
-//             }}
-//           >
-//             <Box sx={{}}>
-//               <Typography>Phone number</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//             <Box>
-//               <Typography>Email address</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//           </Box>
-//           <Box
-//             component="edit_info"
-//             sx={{
-//               display: "flex",
-//               flexDirection: "row",
-//               gap: 5,
-//               width: `100%`,
-//               justifyContent: "center",
-//             }}
-//           >
-//             <Box sx={{}}>
-//               <Typography>Address</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//             <Box>
-//               <Typography>Date of birth</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//           </Box>
-//           <Box
-//             component="edit_info"
-//             sx={{
-//               display: "flex",
-//               flexDirection: "row",
-//               gap: 5,
-//               width: `100%`,
-//               justifyContent: "start",
-//               ml: 71,
-//             }}
-//           >
-//             <Box sx={{}}>
-//               <Typography>Role</Typography>
-//               <TextField type="text" sx={{ width: `350px` }}></TextField>
-//             </Box>
-//           </Box>
-//           <Box sx={{ mt: 5 }}>
-//             <Button variant="contained" sx={{ px: 5 }}>
-//               Next
-//             </Button>
-//           </Box>
-//         </FormControl>
-//       </Box>
-//     );
-//   } else {
-//     reuturn(<DisplayEditAchievemet></DisplayEditAchievemet>);
-//   }
-// };
-
-// const DisplayEditAchievemet = () => {
-//   return (
-//     <Box component="container">
-//       <Box></Box>
-//     </Box>
-//   );
-// };
 
 export default function Profile() {
   const theme = useTheme();
@@ -339,15 +211,15 @@ export default function Profile() {
   console.log(profile.current);
 
   async function exportImage() {
-    const resizedImage = await resizeFile(profile.current);
-    const blob = dataURItoBlob(resizedImage);
+    const blob = dataURItoBlob(profile.current);
+    const resizedImage = await resizeFile(blob);
 
     if (profile) {
       const formData = new FormData();
-      formData.append("image", blob);
+      formData.append("image", resizedImage);
       try {
-        const res = await fetch("http://localhost:8080/upload", {
-          method: "POST",
+        const res = await fetch("http://localhost:8080/user/image/profile  ", {
+          method: "PUT",
           body: formData,
         });
         const data = await res.json();

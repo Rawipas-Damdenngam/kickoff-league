@@ -160,19 +160,23 @@ export default function Home() {
 
   const logIn = async () => {
     try {
-      const res = await fetch("http://localhost:8080/auth/login", {
+     await fetch("http://localhost:8080/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "same-origin",
         body: JSON.stringify({
           email: username,
           password: password,
         }),
-      });
-      const data = await res.json();
+      })
+        .then((response) => {
+         console.log(response);
+        })
+        
 
-      if (res.status === 200) {
+      if (response.status === 200) {
         toast.success(data.message);
         console.log("yay it 200");
         navigate("/news");
@@ -182,9 +186,11 @@ export default function Home() {
         console.log("nope it not 200");
         toast.error(data.message);
       }
-      console.log(res);
+      console.log(response);
       console.log(data);
       console.log(data.user.ID);
+      console.log(response.headers);
+      console.log(response.headers.get("Set-Cookie"));
     } catch (e) {
       console.log(e);
     }
