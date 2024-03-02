@@ -19,6 +19,7 @@ import Achievement from "./pages/Achievement.jsx";
 import Home from "./pages/Home.jsx";
 import TeamProvider from "./components/context/TeamContext.jsx";
 import TeamInfo from "./pages/TeamInfo.jsx";
+import { DataProvider } from "./components/context/DataContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -86,9 +87,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router}>
-      <TeamProvider>
-        <App />
-      </TeamProvider>
+      <DataProvider>
+        <TeamProvider>
+          <App />
+        </TeamProvider>
+      </DataProvider>
     </RouterProvider>
   </React.StrictMode>
 );

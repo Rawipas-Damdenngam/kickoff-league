@@ -112,6 +112,7 @@ export default function TeamInfoOverview() {
               sx={{
                 display: `flex`,
                 flexGrow: `0`,
+                pr: `3rem`,
               }}
             >
               <Box
@@ -140,10 +141,9 @@ export default function TeamInfoOverview() {
               <Box
                 sx={{
                   display: `flex`,
-                  flexBasis: `0`,
                 }}
               >
-                <Box sx={{ width: `300px` }}>
+                <Box sx={{ maxWidth: `300px`, maxHeight: `300px`, pr: `1rem` }}>
                   <img
                     src="src/assets/images/member.jpeg"
                     style={{
@@ -158,7 +158,7 @@ export default function TeamInfoOverview() {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ overflowX: `auto`, flexWrap: `nowrap` }}>
+        <Box sx={{ display: `flex`, overflowX: `auto`, flexWrap: `nowrap` }}>
           <Box
             sx={{
               display: `flex`,

@@ -11,9 +11,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function ShowNewAcc() {
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [signIn, setSignIn] = useState(true);
   const [newAcc, setNewAcc] = useState(false);
   const navigate = useNavigate();
@@ -22,25 +25,33 @@ export default function ShowNewAcc() {
   const signUp = async () => {
     try {
       if (validate) {
-        const res = await fetch("http://127.0.0.1:8080/auth/register/", {
+        const res = await fetch("http://127.0.0.1:8080/auth/register/normal", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            email: email,
             username: username,
             password: password,
             role: role,
           }),
         });
         const data = await res.json();
-        if (data.status === 200) {
+        console.log("data");
+        console.log(data);
+        console.log("response");
+        console.log(res);
+
+        if (res.status === 200) {
           navigate("/news");
+          setUsername("");
+          setPassword("");
+          setEmail("");
+          setConfirmPassword("");
         } else {
           console.log(data.message);
         }
-        setUsername("");
-        setPassword("");
       } else {
         console.log("invalid");
       }
@@ -51,41 +62,73 @@ export default function ShowNewAcc() {
   };
 
   const validate = () => {
-    if (username === "" && password === "") {
-      toast.error("Please fill in all fields", { position: "top-center" });
-      return false;
-    } else if (username.search(/@/) < 0) {
-      toast.error("Invalid email", { position: "top-center" });
-      return false;
-    } else if (password.length < 8) {
-      toast.error("Password must be at least 8 characters", {
-        position: "top-center",
-      });
-      return false;
-    } else if (password.search(/[A-Z]/) < 0) {
-      toast.error("Password must contain at least 1 uppercase letter", {
-        position: "top-center",
-      });
-      return false;
-    } else if (password.search(/[a-z]/) < 0) {
-      toast.error("Password must contain at least 1 lowercase letter", {
-        position: "top-center",
-      });
-      return false;
-    } else if (password.search(/[0-9]/) < 0) {
-      toast.error("Password must contain at least 1 number", {
-        position: "top-center",
-      });
-      return false;
-    } else if (password.search(/[!@#$%^&*(),.?":{}|<>_-]/) < 0) {
-      toast.error("Password must contain at least 1 special character", {
-        position: "top-center",
-      });
-      return false;
+    if (
+      email != "" &&
+      password != "" &&
+      confirmPassword != "" &&
+      username != ""
+    ) {
+      if (email.search(/@/) > 0 && email.search(/.com/) > 0) {
+        if (password >= 8) {
+        }
+      } else {
+        toast.warning("Invalid email", { position: "top-center" });
+        return false;
+      }
     } else {
-      toast.success("Register success", { position: "top-center" });
-      return true;
+      toast.warning("please fill in all fields", { position: "top-center" });
+      return false;
     }
+
+    // if (username === "" && password === "") {
+    //   toast.error("Please fill in all fields", { position: "top-center" });
+    //   return false;
+    // } else if (username.search(/@/) < 0) {
+    //   toast.error("Invalid email", { position: "top-center" });
+    //   return false;
+    // } else if (password.length < 8) {
+    //   toast.error("Password must be at least 8 characters", {
+    //     position: "top-center",
+    //   });
+    //   return false;
+    // } else if (password.search(/[A-Z]/) < 0) {
+    //   toast.error("Password must contain at least 1 uppercase letter", {
+    //     position: "top-center",
+    //   });
+    //   return false;
+    // } else if (password.search(/[a-z]/) < 0) {
+    //   toast.error("Password must contain at least 1 lowercase letter", {
+    //     position: "top-center",
+    //   });
+    //   return false;
+    // } else if (password.search(/[0-9]/) < 0) {
+    //   toast.error("Password must contain at least 1 number", {
+    //     position: "top-center",
+    //   });
+    //   return false;
+    // } else if (password.search(/[!@#$%^&*(),.?":{}|<>_-]/) < 0) {
+    //   toast.error("Password must contain at least 1 special character", {
+    //     position: "top-center",
+    //   });
+    //   return false;
+    // } else if (password !== confirmPassword) {
+    //   toast.error("Password and confirm password not match", {
+    //     position: "top-center",
+    //   });
+    //   return false;
+    // } else if (username === "") {
+    //   toast.error("Please fill in username", { position: "top-center" });
+    //   return false;
+    // } else if (username.length < 6) {
+    //   toast.error("Username must be at least 6 characters", {
+    //     position: "top-center",
+    //   });
+    //   return false;
+    // } else {
+    //   toast.success("Register success", { position: "top-center" });
+    //   return true;
+    // }
+    return true;
   };
 
   const handleSignIn = () => {
@@ -102,6 +145,10 @@ export default function ShowNewAcc() {
     setShowPassword(!showPassword);
   };
 
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const handleMouseDownPassword = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -112,20 +159,24 @@ export default function ShowNewAcc() {
     setUsername(newValue);
     console.log(username);
   };
-  const proceedLogin = (e) => {
-    e.preventDefault();
 
-    console.log("eiei");
-  };
   return (
     <Box sx={{ width: `100%` }}>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ mb: 2, display: `flex`, gap: `0.5rem` }}>
         <TextField
-          sx={{ width: `100%` }}
+          sx={{ width: `100%`, flex: `1 1 auto` }}
           type="text"
+          autoFocus
           label="Email"
           placeholder="Enter email"
+          onChange={(e) => setEmail(e.target.value)}
+        ></TextField>
+        <TextField
+          type="text"
+          label="Username"
+          placeholder="Enter username"
           onChange={(e) => setUsername(e.target.value)}
+          sx={{ width: `100%`, flex: `1 1 auto` }}
         ></TextField>
       </Box>
       <Box sx={{ mb: 2 }}>
@@ -144,6 +195,26 @@ export default function ShowNewAcc() {
                   edge="end"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        ></TextField>
+        <TextField
+          sx={{ width: `100%`, mt: `0.5rem` }}
+          type={showConfirmPassword ? "text" : "password"}
+          label="Confirm Password"
+          placeholder="Confirm password"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={handleShowConfirmPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             ),

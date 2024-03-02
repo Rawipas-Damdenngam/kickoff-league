@@ -165,6 +165,18 @@ export default function MyTeam() {
   const [teams, setTeams] = useState([]);
   const [name, setName] = useState("");
 
+  const fetchUser = async () => {
+    const res = await fetch("http://127.0.0.1:8080/user:id", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: 1,
+      }),
+    });
+  };
+
   const handleTeamSubmit = (e) => {
     e.preventDefault();
     setTeams((prev) => [...prev, name]);
@@ -197,6 +209,7 @@ export default function MyTeam() {
     setCreateTeamTab(false);
     setJoinTeamTab(true);
   };
+
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -328,8 +341,8 @@ export default function MyTeam() {
           <CreateTeam
             open={createTeamOpen}
             handleClose={handleCloseCreateTeam}
+            name={handleNameChange}
             submit={handleTeamSubmit}
-            handleNameChange={handleNameChange}
           ></CreateTeam>
           <Box
             sx={{

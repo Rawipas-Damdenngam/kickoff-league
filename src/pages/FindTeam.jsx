@@ -24,9 +24,16 @@ import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import { useState } from "react";
-import { Button, Icon, createTheme } from "@mui/material";
-import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import { Button, Icon, TextField, createTheme } from "@mui/material";
+import {
+  Dashboard,
+  History,
+  People,
+  AccountBox,
+  ArrowForward,
+} from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import GroupsIcon from "@mui/icons-material/Groups";
 
 const drawerWidth = 240;
 
@@ -156,6 +163,8 @@ const Drawer = styled(MuiDrawer, {
 export default function FindTeam() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [filterTeam , setFilterTeam] = useState([teams.name]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -164,6 +173,68 @@ export default function FindTeam() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const teams = [
+    {
+      name: "Team 1",
+      members: 18,
+      description: "Description for Team 1.",
+    },
+    {
+      name: "Team 2",
+      members: 15,
+      description: "Description for Team 2.",
+    },
+    {
+      name: "Team 3",
+      members: 20,
+      description: "Description for Team 3.",
+    },
+    {
+      name: "Team 4",
+      members: 17,
+      description: "Description for Team 4.",
+    },
+    {
+      name: "Team 5",
+      members: 16,
+      description: "Description for Team 5.",
+    },
+    {
+      name: "Team 6",
+      members: 19,
+      description: "Description for Team 6.",
+    },
+    {
+      name: "Team 7",
+      members: 14,
+      description: "Description for Team 7.",
+    },
+    {
+      name: "Team 8",
+      members: 22,
+      description: "Description for Team 8.",
+    },
+    {
+      name: "Team 9",
+      members: 21,
+      description: "Description for Team 9.",
+    },
+    {
+      name: "Team 10",
+      members: 16,
+      description: "Description for Team 10.",
+    },
+  ];
+
+  const handleFilterTeam = () => {
+    //search team by name
+
+
+
+
+  }
+
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -192,10 +263,10 @@ export default function FindTeam() {
           </Typography>
           <Box sx={{ paddingLeft: 110 }}></Box>
           <Link to={"/"}>
-              <Button variant="contained" sx={{ backgroundColor: `` }}>
-                <LogoutIcon sx={{}}></LogoutIcon>
-              </Button>
-            </Link>
+            <Button variant="contained" sx={{ backgroundColor: `` }}>
+              <LogoutIcon sx={{}}></LogoutIcon>
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -243,11 +314,105 @@ export default function FindTeam() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3,minHeight:`100vh`, minWidth:`100vh` }}>
+      <Box
+        component="main"
+        sx={{
+          display: `flex`,
+          flexDirection: `column`,
+          flexGrow: 1,
+          p: 3,
+          minHeight: `100vh`,
+          minWidth: `100vh`,
+        }}
+      >
         <DrawerHeader />
-        <Typography paragraph sx={{ }}>
-          content here
-        </Typography>
+        <Box
+          sx={{
+            display: `flex`,
+            height: `100px`,
+            width: `100%`,
+            justifyContent: `center`,
+            alignItems: `center`,
+          }}
+        >
+          <TextField
+            sx={{ width: `100%` }}
+            label="search"
+            placeholder="enter team name"
+          ></TextField>
+        </Box>
+        <Box sx={{ display: `flex`, flexDirection: `column`, gap: `1rem` }}>
+          {teams.map((team, index) => {
+            return (
+              <Box
+                key={index}
+                sx={{
+                  display: `flex`,
+                  border: `1px solid `,
+                  borderRadius: `10px`,
+                  justifyContent: `space-between`,
+                }}
+              >
+                <Box sx={{ height: `150px`, width: `200px` }}>
+                  <img
+                    src="src/assets/images/liverPool.jpeg"
+                    style={{
+                      width: `100%`,
+                      height: `100%`,
+                      objectFit: `cover`,
+                    }}
+                  ></img>
+                </Box>
+                <Box
+                  sx={{
+                    display: `flex`,
+                    flexDirection: `column`,
+                    width: `100%`,
+                    pl: `5rem`,
+                    py: `1rem`,
+                  }}
+                >
+                  <Box>
+                    <Typography variant="h2">{team.name}</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body1">{team.description}</Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: `flex`,
+                    flexDirection: `column`,
+                    width: `20%`,
+                    justifyContent: `space-between`,
+                    p: `1rem`,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: `flex`,
+                      justifyContent: `center`,
+                      alignItems: `center`,
+                      gap: `0.5rem`,
+                    }}
+                  >
+                    <Box>
+                      <Typography variant="h4"> {team.members}</Typography>
+                    </Box>
+                    <Box sx={{}}>
+                      <GroupsIcon sx={{ fontSize: `40px` }}></GroupsIcon>
+                    </Box>
+                  </Box>
+                  <Box sx={{ display: `flex`, justifyContent: `flex-end` }}>
+                    <Button variant="contained" endIcon={<ArrowForward />}>
+                      View Team
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
     </Box>
   );

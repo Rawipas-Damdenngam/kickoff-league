@@ -425,12 +425,12 @@ export default function FindPeople() {
     const result = Data.normalUser.filter((user) => {
       return (
         user.first_name_eng.toLowerCase().includes(name) ||
-        user.last_name_eng.toLowerCase().includes(name) 
+        user.last_name_eng.toLowerCase().includes(name)
       );
     });
     console.log(result);
     setFilterResults(result);
-  }, [name,]);
+  }, [name]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -537,7 +537,6 @@ export default function FindPeople() {
               <Box
                 sx={{
                   display: `flex`,
-                  alignItems: `baseline`,
                   pb: `0.75rem`,
                   mb: `0.75rem`,
                   borderBottomWidth: `1px`,

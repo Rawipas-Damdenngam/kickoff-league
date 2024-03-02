@@ -1,8 +1,7 @@
 import "./Home.css";
 import { ToastContainer, toast } from "react-toastify";
-import Data from "../../mockUP.json";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import {
   Box,
@@ -31,9 +30,9 @@ import Links from "@mui/material/Link";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import ShowSignIn from "../components/login/Signin";
 import ShowNewAcc from "../components/login/NewAcc";
+import { DataContext } from "../components/context/DataContext";
 
 export default function Home() {
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -78,6 +77,7 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const dataContext = useContext(DataContext);
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -91,56 +91,59 @@ export default function Home() {
     e.stopPropagation();
   };
 
-  function proceedLogin(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  // function proceedLogin(e) {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-    if (validate()) {
+  //   if (validate()) {
+  //     let user = Data.users.find((user) => user.email === username);
+  //     if (user) {
+  //       if (user.password_hash === password) {
+  //         console.log("Login Success");
+  //         // alert("Login Success");
+  //         toast.success("Login Success", { position: "top-center" });
+  //         navigate("/news");
+  //       } else {
+  //         console.log("Password incorrect");
+  //         // alert("Password incorrect");
+  //         toast.error("Password is incorrect");
+  //       }
+  //     } else {
+  //       console.log("User not found");
+  //       // alert("User not found");
+  //       toast.error("User not found");
+  //     }
+  //   }
+  // }
 
-      
-      let user = Data.users.find((user) => user.email === username);
-      if (user) {
-        if (user.password_hash === password) {
-          console.log("Login Success");
-          // alert("Login Success");
-          toast.success("Login Success", { position: "top-center" });
-          navigate("/news");
-        } else {
-          console.log("Password incorrect");
-          // alert("Password incorrect");
-          toast.error("Password is incorrect");
-        }
-      } else {
-        console.log("User not found");
-        // alert("User not found");
-        toast.error("User not found");
-      }
-    }
-  }
+  // const validate = () => {
+  //   let result = true;
 
-  const validate = () => {
-    let result = true;
-
-    if (username === "" || username === null) {
-      result = false;
-      console.log("enter mail");
-      // alert("Please Enter Email");
-      toast.warn("Please Enter Email");
-    }
-    if (password === "" || password === null) {
-      result = false;
-      console.log("enter pass");
-      // alert("Please Enter Password");
-      toast.warn("Please Enter Password");
-    }
-    return result;
-  };
+  //   if (username === "" || username === null) {
+  //     result = false;
+  //     console.log("enter mail");
+  //     // alert("Please Enter Email");
+  //     toast.warn("Please Enter Email");
+  //   }
+  //   if (password === "" || password === null) {
+  //     result = false;
+  //     console.log("enter pass");
+  //     // alert("Please Enter Password");
+  //     toast.warn("Please Enter Password");
+  //   }
+  //   return result;
+  // };
 
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleNewAcc = () => {
+    setNewAcc(true);
+    setSignIn(false);
   };
 
   const [signIn, setSignIn] = useState(true);
@@ -151,9 +154,40 @@ export default function Home() {
   };
   const [newAcc, setNewAcc] = useState(false);
 
-  const handleNewAcc = () => {
-    setSignIn(false);
-    setNewAcc(true);
+  const handleID = () => {
+    dataContext.handleId("1");
+  };
+
+  const logIn = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: username,
+          password: password,
+        }),
+      });
+      const data = await res.json();
+
+      if (res.status === 200) {
+        toast.success(data.message);
+        console.log("yay it 200");
+        navigate("/news");
+        setUsername("");
+        setPassword("");
+      } else {
+        console.log("nope it not 200");
+        toast.error(data.message);
+      }
+      console.log(res);
+      console.log(data);
+      console.log(data.user.ID);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   console.log(signIn);
@@ -251,7 +285,7 @@ export default function Home() {
                           <ShowSignIn
                             username={handleUsernameChange}
                             password={handlePasswordChange}
-                            proceedLogin={proceedLogin}
+                            logIn={logIn}
                           ></ShowSignIn>
                         ) : (
                           <ShowNewAcc></ShowNewAcc>

@@ -11,7 +11,7 @@ import Data from "../../../mockUP.json";
 import { toast } from "react-toastify";
 
 export default function ShowSignIn(props) {
-  const { username, password, proceedLogin } = props;
+  const { username, password, logIn } = props;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,6 +23,25 @@ export default function ShowSignIn(props) {
     e.preventDefault();
     e.stopPropagation();
   };
+
+  // const logIn = async () => {
+  //   try {
+  //     const res = await fetch("http://localhost:8080/auth/login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email: username,
+  //         password: password,
+  //       }),
+  //     });
+  //     const data = await res.json();
+  //     console.log(data);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <Box sx={{}}>
@@ -72,8 +91,8 @@ export default function ShowSignIn(props) {
         >
           <Button
             type="button"
-            onClick={proceedLogin}
-            onKeyDown={(e) => (e.key === "Enter" ? proceedLogin(e) : null)}
+            onClick={logIn}
+            onKeyDown={(e) => (e.key === "Enter" ? {logIn} : null)}
             variant="contained"
             sx={{ p: `9px 16px`, width: `100%` }}
           >

@@ -1,15 +1,148 @@
-import { Box } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import React from "react";
 
 export default function Team_info_member() {
+  const members = [
+    {
+      firstName: "John",
+      lastName: "Doe",
+      position: "forward",
+      gender: "male",
+    },
+    {
+      firstName: "Jane",
+      lastName: "Smith",
+      position: "midfielder",
+      gender: "female",
+    },
+    {
+      firstName: "Michael",
+      lastName: "Johnson",
+      position: "defender",
+      gender: "male",
+    },
+    {
+      firstName: "Emily",
+      lastName: "Brown",
+      position: "goalkeeper",
+      gender: "female",
+    },
+    {
+      firstName: "David",
+      lastName: "Williams",
+      position: "midfielder",
+      gender: "male",
+    },
+    {
+      firstName: "Emma",
+      lastName: "Davis",
+      position: "defender",
+      gender: "female",
+    },
+    {
+      firstName: "James",
+      lastName: "Jones",
+      position: "forward",
+      gender: "male",
+    },
+    {
+      firstName: "Sophia",
+      lastName: "Taylor",
+      position: "midfielder",
+      gender: "female",
+    },
+    {
+      firstName: "Daniel",
+      lastName: "Wilson",
+      position: "defender",
+      gender: "male",
+    },
+    {
+      firstName: "Olivia",
+      lastName: "Martinez",
+      position: "goalkeeper",
+      gender: "female",
+    },
+  ];
   return (
     <Box sx={{ display: `flex` }}>
-      <Box sx={{ display: `flex`, flexDirection: `column`, flexBasis: `20%`, flexShrink:`1` }}>
+      <Box
+        sx={{
+          display: `flex`,
+          flexDirection: `column`,
+          flexBasis: `20%`,
+          flexShrink: `1`,
+          pr: `2rem`,
+        }}
+      >
         <Box>Social media</Box>
-      
       </Box>
       <Box sx={{ display: `flex`, flexDirection: `column`, flexGrow: `1` }}>
-        <Box>member info</Box>
+        <Box sx={{ display: `flex`, alignItems: `center`, pb: `1rem` }}>
+          <Typography variant="h2" sx={{ p: `1rem` }}>
+            Player(s)
+          </Typography>
+
+          <Typography variant="h2">({members.length})</Typography>
+        </Box>
+        <Box sx={{ display: `flex`, gap: `2rem`, flexWrap: `wrap` }}>
+          {members.map((member, index) => {
+            return (
+              <Card key={index} sx={{ maxWidth: `350px`, width: `210px` }}>
+                <CardMedia
+                  component="img"
+                  height="194"
+                  width="100%"
+                  image="src/assets/images/profile2.jpeg"
+                ></CardMedia>
+                <CardContent>
+                  <Typography variant="body1">{member.firstName}</Typography>
+                  <Typography variant="h4">{member.lastName}</Typography>
+                  <Typography variant="body1">
+                    position: {member.position}
+                  </Typography>
+                  <Box
+                    sx={{ display: `flex`, justifyContent: `space-between` }}
+                  >
+                    <Typography variant="body1">{member.gender}</Typography>
+                    <Box
+                      sx={{
+                        display: `flex`,
+                        alignItems: `center`,
+                        ":hover": {
+                          cursor: `pointer`,
+                          backgroundColor: `#f0f0f0`,
+                          borderRadius: `5px`,
+                        },
+                      }}
+                    >
+                      <Typography sx={{ fontSize: `12px`, pr: `0.2rem` }}>
+                        View profile
+                      </Typography>
+                      <ArrowForwardIcon
+                        sx={{ fontSize: `15px` }}
+                      ></ArrowForwardIcon>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </Box>
+        <Box sx={{ p: `1rem`, display: `flex`, alignItems: `center` }}>
+          <Typography variant="h2" sx={{ p: `1rem` }}>
+            Couch & Manager
+          </Typography>
+          <Typography variant="h2">({members.length})</Typography>
+        </Box>
       </Box>
     </Box>
   );

@@ -23,10 +23,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { toast, ToastContainer } from "react-toastify";
 const drawerWidth = 240;
 
 const drawerItems = [
@@ -156,6 +157,7 @@ export default function News() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -249,6 +251,7 @@ export default function News() {
         <DrawerHeader />
         <Box sx={{}}>content</Box>
       </Box>
+      <ToastContainer />
     </Box>
   );
 }

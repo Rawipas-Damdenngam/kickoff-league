@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { FormControl, TextField } from "@mui/material";
-import {TeamContext} from "../context/TeamContext";
+import { TeamContext } from "../context/TeamContext";
 
 const style = {
   position: "absolute",
@@ -21,12 +21,31 @@ const style = {
 };
 
 export default function CreateTeam(props) {
-  const { open, handleClose, submit, handleNameChange } = props;
+  const { open, handleClose, submit, name } = props;
   const teamContext = useContext(TeamContext);
 
- 
-
   
+
+  const createTeam = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8080/user/team", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+        }),
+      });
+      const data = await res.json();
+      console.log("data");
+      console.log(data);
+      console.log("response");
+      console.log(res);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
   return (
     <Box>
@@ -57,7 +76,7 @@ export default function CreateTeam(props) {
               <TextField
                 label="Name"
                 placeholder="Enter your team name"
-                onChange={handleNameChange}
+                onChange={name}
                 sx={{ width: `100%`, mb: `1rem` }}
               ></TextField>
               <Button onClick={submit} variant="contained">
