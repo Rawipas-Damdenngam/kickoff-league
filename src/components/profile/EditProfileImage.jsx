@@ -12,16 +12,16 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
+
   p: 4,
 };
 
 export default function EditProfileImage(props) {
-  const { open, handleClose, updateImage} =
-    props;
+  const { open, handleClose, updateImage } = props;
   const [file, setFile] = React.useState(null);
 
   return (
-    <Box>
+    <Box sx={{}}>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Box
@@ -30,6 +30,8 @@ export default function EditProfileImage(props) {
               flexDirection: `column`,
               justifyContent: `center`,
               alignItems: `center`,
+              width: `100%`,
+              height: `100%`,
             }}
           >
             <Box
@@ -42,7 +44,10 @@ export default function EditProfileImage(props) {
             >
               {/* <img src={`${currentImage}`} alt="fail to load current img"></img> */}
             </Box>
-            <ImageCropper updateImage={updateImage} closeModal={handleClose}></ImageCropper>
+            <ImageCropper
+              updateImage={updateImage}
+              closeModal={handleClose}
+            ></ImageCropper>
           </Box>
         </Box>
       </Modal>

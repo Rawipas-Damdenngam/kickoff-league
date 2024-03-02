@@ -22,7 +22,8 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 const aspectRatio = 1;
-const minDimension = 150;
+const minDimension = 201;
+const minDimensionHieght = 251;
 
 export default function ImageCropper(props) {
   const { updateImage, closeModal } = props;
@@ -31,9 +32,11 @@ export default function ImageCropper(props) {
   const [error, setError] = useState("");
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
+  const [file , setFile] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
+    setFile(file);
     if (!file) {
       return;
     }
@@ -47,7 +50,7 @@ export default function ImageCropper(props) {
         if (error) setError("");
         const { naturalWidth, naturalHeight } = e.currentTarget;
         if (naturalWidth < minDimension || naturalHeight < minDimension) {
-          setError("Image must be at least 150 x 150  pixels");
+          setError("Image must be at least 201 x 251  pixels");
           return setImgSrc("");
         }
       });
@@ -61,11 +64,13 @@ export default function ImageCropper(props) {
   const onImageLoad = (e) => {
     const { width, height } = e.currentTarget;
     const cropWidthPercent = (minDimension / width) * 100;
+    const cropHeightPercent = (minDimensionHieght / height) * 100;
 
     const crop = makeAspectCrop(
       {
         unit: "%",
         width: cropWidthPercent,
+        height: cropHeightPercent,
       },
       aspectRatio,
       width,
@@ -74,6 +79,9 @@ export default function ImageCropper(props) {
     const center = centerCrop(crop, width, height);
     setCrop(center);
   };
+
+  console.log(imgSrc);
+  console.log(imgRef);
 
   return (
     <Box sx={{ mt: `1rem` }}>
@@ -91,14 +99,13 @@ export default function ImageCropper(props) {
           <ReactCrop
             crop={crop}
             onChange={(pixelCrop, percentCrop) => setCrop(percentCrop)}
-            keepSelection
             aspect={aspectRatio}
             minWidth={minDimension}
           >
             <img
               ref={imgRef}
               src={imgSrc}
-              style={{ maxWidth: `70vh` }}
+              style={{ maxHeight: `70vh` }}
               onLoad={onImageLoad}
             ></img>
           </ReactCrop>
@@ -118,6 +125,7 @@ export default function ImageCropper(props) {
           );
           const dataURL = previewCanvasRef.current.toDataURL();
           updateImage(dataURL);
+
           closeModal();
         }}
       >

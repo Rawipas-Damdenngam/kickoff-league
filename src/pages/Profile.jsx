@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
+import React from "react";
 import "./Profile.css";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -302,8 +303,52 @@ export default function Profile() {
   const profile = useRef("src/assets/images/profile1.jpeg");
   const [editImage, setEditImage] = useState(false);
 
+  function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+  
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+  
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+  
+    // create a view into the buffer
+    var ia = new Uint8Array(ab);
+  
+    // set the bytes of the buffer to the correct values
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+  
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab], {type: mimeString});
+    return blob;
+  
+  }
+
+  async function exportImage() {
+    const blob = dataURItoBlob(profile.current);
+    if (profile) {
+      const formData = new FormData();
+      formData.append("image", blob);
+      try {
+        const res = await fetch("http://localhost:8080/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        console.log(data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
   const updateImage = (src) => {
     profile.current = src;
+    exportImage();
   };
 
   const handleEditImage = () => {
@@ -444,9 +489,12 @@ export default function Profile() {
                 }}
               >
                 <Box
+                  id="profile-box"
                   sx={{
+                    display: `flex`,
                     m: `1rem`,
                     textAlign: `center`,
+                    flexGrow: 0,
                     width: `200px`,
                     height: `251px`,
                   }}
@@ -456,14 +504,12 @@ export default function Profile() {
                       display: `block`,
                       position: `relative`,
                       width: `100%`,
+                      height: `100%`,
                     }}
                   >
                     <img
                       src={profile.current}
                       style={{
-                        top: `0`,
-                        left: `0`,
-                        verticalAlign: `middle`,
                         width: `100%`,
                         height: `100%`,
                         objectFit: `cover`,
@@ -592,7 +638,6 @@ export default function Profile() {
                               const age =
                                 currentDate.getFullYear() -
                                 birthDate.getFullYear();
-                              console.log(currentDate);
                               return (
                                 <Box key={index}>
                                   <Box
