@@ -24,7 +24,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState } from "react";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { useState, useRef } from "react";
 import {
   Button,
   Card,
@@ -37,6 +38,7 @@ import {
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Data from "../../mockUP.json";
+import EditProfileImage from "../components/profile/EditProfileImage";
 
 const drawerWidth = 240;
 
@@ -297,6 +299,20 @@ export default function Profile() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
+  const profile = useRef("src/assets/images/profile1.jpeg");
+  const [editImage, setEditImage] = useState(false);
+
+  const updateImage = (src) => {
+    profile.current = src;
+  };
+
+  const handleEditImage = () => {
+    setEditImage(true);
+  };
+  const handleEditImageCancel = () => {
+    setEditImage(false);
+  };
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -304,6 +320,18 @@ export default function Profile() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -415,17 +443,23 @@ export default function Profile() {
                   flexWrap: `wrap`,
                 }}
               >
-                <Box sx={{ m: `1rem`, flex: `1,1,auto`, textAlign: `center` }}>
+                <Box
+                  sx={{
+                    m: `1rem`,
+                    textAlign: `center`,
+                    width: `200px`,
+                    height: `251px`,
+                  }}
+                >
                   <Box
                     sx={{
                       display: `block`,
                       position: `relative`,
                       width: `100%`,
-                      height: `0`,
                     }}
                   >
                     <img
-                      src="src/assets/images/profile1.jpeg"
+                      src={profile.current}
                       style={{
                         top: `0`,
                         left: `0`,
@@ -434,7 +468,32 @@ export default function Profile() {
                         height: `100%`,
                         objectFit: `cover`,
                       }}
+                      alt="profile img"
                     ></img>
+                    <Box
+                      sx={{
+                        display: `flex`,
+                        border: `1px solid white`,
+                        borderRadius: `50%`,
+                        position: `absolute`,
+                        bottom: `0`,
+                        right: `0`,
+                        backgroundColor: `grey`,
+                        width: `20%`,
+                        height: `15%`,
+                        justifyContent: `center`,
+                        alignItems: `center`,
+                      }}
+                    >
+                      <IconButton tabIndex={-1} onClick={handleEditImage}>
+                        <CameraAltIcon />
+                      </IconButton>
+                      <EditProfileImage
+                        open={editImage}
+                        handleClose={handleEditImageCancel}
+                        updateImage={updateImage}
+                      ></EditProfileImage>
+                    </Box>
                   </Box>
                 </Box>
                 <Box sx={{ m: `1rem` }}>
