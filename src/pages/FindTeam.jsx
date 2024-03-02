@@ -164,7 +164,7 @@ export default function FindTeam() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [filterTeam , setFilterTeam] = useState([teams.name]);
+  // const [filterTeam , setFilterTeam] = useState([teams.name]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -229,12 +229,7 @@ export default function FindTeam() {
 
   const handleFilterTeam = () => {
     //search team by name
-
-
-
-
-  }
-
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
