@@ -8,12 +8,11 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
-  height: 700,
+  height: 800,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-
-  p: 4,
+  m:`1rem`
 };
 
 export default function EditProfileImage(props) {
@@ -21,36 +20,25 @@ export default function EditProfileImage(props) {
   const [file, setFile] = React.useState(null);
 
   return (
-    <Box sx={{}}>
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
-          <Box
-            sx={{
-              display: `flex`,
-              flexDirection: `column`,
-              justifyContent: `center`,
-              alignItems: `center`,
-              width: `100%`,
-              height: `100%`,
-            }}
-          >
-            <Box
-              sx={{
-                display: `flex`,
-                maxWidth: `200px`,
-                maxHeight: `300px`,
-                border: `1px solid`,
-              }}
-            >
-              {/* <img src={`${currentImage}`} alt="fail to load current img"></img> */}
-            </Box>
-            <ImageCropper
-              updateImage={updateImage}
-              closeModal={handleClose}
-            ></ImageCropper>
-          </Box>
+    <Modal open={open} onClose={handleClose}>
+      <Box sx={style}>
+        <Box
+          sx={{
+            display: `flex`,
+            flexDirection: `column`,
+            justifyContent: `center`,
+            alignItems: `center`,
+            width: `100%`,
+            height: `100%`,
+            overflowY: `auto`,
+          }}
+        >
+          <ImageCropper
+            updateImage={updateImage}
+            closeModal={handleClose}
+          ></ImageCropper>
         </Box>
-      </Modal>
-    </Box>
+      </Box>
+    </Modal>
   );
 }

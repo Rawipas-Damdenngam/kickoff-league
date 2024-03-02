@@ -9,6 +9,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { useRef, useState } from "react";
 import React from "react";
 import setCanvasPreview from "./setCanvaPreview";
+import Resizer from "react-image-file-resizer";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -22,8 +23,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 const aspectRatio = 1;
-const minDimension = 201;
-const minDimensionHieght = 251;
+const minDimension = 200;
 
 export default function ImageCropper(props) {
   const { updateImage, closeModal } = props;
@@ -32,11 +32,28 @@ export default function ImageCropper(props) {
   const [error, setError] = useState("");
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
-  const [file , setFile] = useState("");
+  const [file, setFile] = useState("");
 
-  const handleFileChange = (e) => {
+  const resizeFile = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      200,
+      200,
+      "jpeg",
+      100,
+      0,
+      (uri) => {
+        resolve(uri);
+      },
+      "base64"
+    );
+  });
+
+  async function handleFileChange(e){
     const file = e.target.files?.[0];
-    setFile(file);
+    const resizedFile = await resizeFile(file);
+    setFile(resizedFile);
     if (!file) {
       return;
     }
@@ -64,13 +81,11 @@ export default function ImageCropper(props) {
   const onImageLoad = (e) => {
     const { width, height } = e.currentTarget;
     const cropWidthPercent = (minDimension / width) * 100;
-    const cropHeightPercent = (minDimensionHieght / height) * 100;
 
     const crop = makeAspectCrop(
       {
         unit: "%",
         width: cropWidthPercent,
-        height: cropHeightPercent,
       },
       aspectRatio,
       width,
@@ -80,32 +95,42 @@ export default function ImageCropper(props) {
     setCrop(center);
   };
 
-  console.log(imgSrc);
-  console.log(imgRef);
-
   return (
-    <Box sx={{ mt: `1rem` }}>
-      <Button variant="contained" component="label">
+    <Box
+      sx={{
+        display: `flex`,
+        flexDirection: `column`,
+        gap: `1rem`,
+        alignItems: `center`,
+      }}
+    >
+      <Typography variant="h5">edit profile</Typography>
+      <Button
+        variant="contained"
+        component="label"
+        sx={{ width: `fit-content` }}
+      >
         Choose file
         <VisuallyHiddenInput
           type="file"
-          accept="image/png, image/jpeg"
+          accept="image/png, image/jpeg, image/jpg"
           onChange={handleFileChange}
         />
       </Button>
       {error && <Typography sx={{ color: `red` }}>{error}</Typography>}
       {imgSrc && (
-        <Box>
+        <Box sx={{}}>
           <ReactCrop
             crop={crop}
             onChange={(pixelCrop, percentCrop) => setCrop(percentCrop)}
             aspect={aspectRatio}
             minWidth={minDimension}
+            style={{ margin: `1rem`,}}
           >
             <img
               ref={imgRef}
               src={imgSrc}
-              style={{ maxHeight: `70vh` }}
+              style={{ maxHeight: `70vh`, maxWidth: `70vw` }}
               onLoad={onImageLoad}
             ></img>
           </ReactCrop>
@@ -113,6 +138,7 @@ export default function ImageCropper(props) {
       )}
       <Button
         variant="contained"
+        sx={{ width: `130px` }}
         onClick={() => {
           setCanvasPreview(
             imgRef.current,
