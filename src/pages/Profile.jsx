@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
-import React from "react";
+import React, { useContext } from "react";
 import "./Profile.css";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -26,7 +26,7 @@ import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Button,
   Card,
@@ -36,11 +36,18 @@ import {
   TextField,
   createTheme,
 } from "@mui/material";
-import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
+import {
+  Dashboard,
+  History,
+  People,
+  AccountBox,
+  Edit,
+} from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Data from "../../mockUP.json";
 import EditProfileImage from "../components/profile/EditProfileImage";
 import Resizer from "react-image-file-resizer";
+import EditProfileInfo from "../components/profile/EditProfileInfo";
 
 const drawerWidth = 240;
 
@@ -167,11 +174,80 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-
-
 export default function Profile() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const navigate = useNavigate();
+
+  const [data, setData] = useState({});
+  const [userData, setUserData] = useState({});
+  const [realData, setRealData] = useState({});
+  const currentDate = new Date();
+  const birthDate = new Date(userData.Detail?.born);
+  const age = currentDate.getFullYear() - birthDate.getFullYear();
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const id = localStorage.getItem("id");
+        // const userID = JSON.parse(id);
+        console.log("id");
+        console.log(id);
+        // console.log("userID");
+        // console.log(userID.Detail.id);
+
+        const res = await fetch(`http://localhost:8080/view/users/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        const data = await res.json().then();
+        console.log(data);
+        setUserData(data.user);
+        console.log(userData);
+      };
+      fetchData();
+    } catch (e) {
+      console.log(e);
+    }
+  }, [isEdit]);
+
+  const handleLogout = async () => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
+  };
+
+  const handleEditProfile = async () => {
+    const id = localStorage.getItem("id");
+    const res = await fetch(`http://localhost:8080/view/users/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const data = await res.json();
+    console.log(data);
+    setData(data);
+    setIsEdit(true);
+  };
+
+  const handleEditProfileClose = () => {
+    setIsEdit(false);
+  };
 
   const profile = useRef("src/assets/images/profile1.jpeg");
   const [editImage, setEditImage] = useState(false);
@@ -200,12 +276,21 @@ export default function Profile() {
     return blob;
   }
 
-  const resizeFile = (file) => new Promise(resolve => {
-    Resizer.imageFileResizer(file, 300, 300, 'JPEG', 100, 0,
-    uri => {
-      resolve(uri);
-    }, 'base64' );
-});
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        300,
+        300,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "blob"
+      );
+    });
 
   console.log("current");
   console.log(profile.current);
@@ -221,8 +306,13 @@ export default function Profile() {
         const res = await fetch("http://localhost:8080/user/image/profile  ", {
           method: "PUT",
           body: formData,
+          credentials: "include",
         });
         const data = await res.json();
+        if (res.status === 200) {
+        } else {
+          console.log(data.message);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -233,6 +323,11 @@ export default function Profile() {
     profile.current = src;
     exportImage();
   }
+
+  // const handleLogout = () => {
+  //   navigate("/");
+  //   localStorage.clear();
+  // };
 
   const handleEditImage = () => {
     setEditImage(true);
@@ -286,12 +381,30 @@ export default function Profile() {
           >
             Profile
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
-          <Link to={"/"}>
-            <Button variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-          </Link>
+
+          <Button
+            variant="contained"
+            onClick={handleLogout}
+            sx={{ backgroundColor: `` }}
+          >
+            <LogoutIcon sx={{}}></LogoutIcon>
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              console.log(realData);
+            }}
+          >
+            real data
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              console.log(realData.Detail.born);
+            }}
+          >
+            born
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -339,7 +452,10 @@ export default function Profile() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, minHeight: `100vh` }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, minHeight: `100vh`, minWidth: `100vh` }}
+      >
         <DrawerHeader />
         <Box>
           <Box
@@ -390,6 +506,9 @@ export default function Profile() {
                       position: `relative`,
                       width: `100%`,
                       height: `100%`,
+                      border: `2px solid white`,
+                      borderRadius: `5px`,
+                      overflow:`hidden`
                     }}
                   >
                     <img
@@ -414,6 +533,7 @@ export default function Profile() {
                         height: `15%`,
                         justifyContent: `center`,
                         alignItems: `center`,
+                        m: `0.3rem`,
                       }}
                     >
                       <IconButton tabIndex={-1} onClick={handleEditImage}>
@@ -429,18 +549,19 @@ export default function Profile() {
                 </Box>
                 <Box sx={{ m: `1rem` }}>
                   <Box>
-                    {Data.normalUser.map((user, index) => {
-                      if (user.id === 1)
-                        return (
-                          <Typography
-                            key={index}
-                            variant="h3"
-                            sx={{ color: `white` }}
-                          >
-                            {user.first_name_eng + " " + user.last_name_eng}
-                          </Typography>
-                        );
-                    })}
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        px: `1rem`,
+                        color: `black`,
+                        backgroundColor: `white`,
+                        borderRadius: `10px`,
+                      }}
+                    >
+                      {userData.Detail?.first_name_eng +
+                        " " +
+                        userData.Detail?.last_name_eng}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
@@ -502,7 +623,7 @@ export default function Profile() {
         <hr></hr>
         <Box sx={{}}>
           <Box sx={{}}>
-            <Box sx={{ mt: `2rem`, px: `4rem` }}>
+            <Box sx={{ mt: `2rem`, px: `4rem`, pb: `5rem` }}>
               <Box sx={{ display: `flex` }}>
                 <Box
                   sx={{
@@ -516,150 +637,244 @@ export default function Profile() {
                     <Box sx={{ lineHeight: `1.5` }}>
                       <Box sx={{ width: `100%` }}>
                         <Box sx={{ verticalAlign: `middle` }}>
-                          {Data.normalUser.map((data, index) => {
-                            if (data.id === 1) {
-                              const currentDate = new Date();
-                              const birthDate = new Date(data.date_of_birth);
-                              const age =
-                                currentDate.getFullYear() -
-                                birthDate.getFullYear();
-                              return (
-                                <Box key={index}>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ pb: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Nationality
-                                    </Typography>
-                                    <Typography
-                                      sx={{ pb: `1rem`, textAlign: `right` }}
-                                    >
-                                      {data.nationality}
-                                    </Typography>
-                                  </Box>
-                                  <Box>
-                                    {Data.addresses.map((address, index) => {
-                                      if (address.id === 1)
-                                        return (
-                                          <Box
-                                            key={index}
-                                            sx={{
-                                              display: `flex`,
-                                              flexDirection: `row`,
-                                              justifyContent: `space-between`,
-                                              borderBottom: `1px solid black`,
-                                              borderWidth: `0.125rem`,
-                                              borderColor: `#e5e8ed;`,
-                                            }}
-                                          >
-                                            <Typography
-                                              sx={{
-                                                py: `1rem`,
-                                                textAlign: `initial`,
-                                              }}
-                                            >
-                                              Address
-                                            </Typography>
-                                            <Typography
-                                              sx={{
-                                                py: `1rem`,
-                                                textAlign: `right`,
-                                              }}
-                                            >
-                                              {address.village +
-                                                "," +
-                                                " " +
-                                                address.subdistrict +
-                                                "," +
-                                                " " +
-                                                address.district}
-                                            </Typography>
-                                          </Box>
-                                        );
-                                    })}
-                                  </Box>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Gender
-                                    </Typography>
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `right` }}
-                                    >
-                                      {data.sex}
-                                    </Typography>
-                                  </Box>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Age
-                                    </Typography>
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `right` }}
-                                    >
-                                      {age}
-                                    </Typography>
-                                  </Box>
-                                  <Box
-                                    sx={{
-                                      display: `flex`,
-                                      flexDirection: `row`,
-                                      justifyContent: `space-between`,
-                                      borderBottom: `1px solid black`,
-                                      borderWidth: `0.125rem`,
-                                      borderColor: `#e5e8ed;`,
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `initial` }}
-                                    >
-                                      Position
-                                    </Typography>
-                                    <Typography
-                                      sx={{ py: `1rem`, textAlign: `right` }}
-                                    >
-                                      {data.favoritePosition}
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                              );
-                            }
-                          })}
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography
+                              key="description"
+                              sx={{ flexGrow: `1` }}
+                            >
+                              Description:
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>
+                                {userData.Detail?.description}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                              p: `1rem`,
+                            }}
+                          >
+                            <Typography sx={{ flexGrow: `1` }}>
+                              Nationality
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography key="nation" sx={{}}>
+                                {userData.Detail?.nationality}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography key="address" sx={{ flexGrow: `1` }}>
+                              Address
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>
+                                378 bangkrasor nonthaburi
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography key="phone" sx={{ flexGrow: `1` }}>
+                              Phone:
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>
+                                {userData.Detail?.phone}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography key="age" sx={{ flexGrow: `1` }}>
+                              Age:
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>{age}</Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography key="height" sx={{ flexGrow: `1` }}>
+                              Height:
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>
+                                {userData.Detail?.height + " " + "cm"}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography key="weight" sx={{ flexGrow: `1` }}>
+                              Weight:
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>
+                                {userData.Detail?.weight + " " + "kg"}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography key="position" sx={{ flexGrow: `1` }}>
+                              Position:
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>
+                                {userData.Detail?.position}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              mt: `1rem`,
+                              p: `1rem`,
+                              borderBottom: `1px solid`,
+                              display: `flex`,
+                              gap: `1rem`,
+                            }}
+                          >
+                            <Typography key="gender" sx={{ flexGrow: `1` }}>
+                              Gender:
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: `flex`,
+                                justifyContent: `end`,
+                                alignItems: `flex-end`,
+                              }}
+                            >
+                              <Typography sx={{}}>
+                                {userData.Detail?.sex}
+                              </Typography>
+                            </Box>
+                          </Box>
                         </Box>
                       </Box>
                     </Box>
                   </Box>
                 </Box>
-                <Box sx={{ m: `1rem`, flexGrow: `1` }}>2</Box>
+                <Box>
+                  <IconButton
+                    onClick={handleEditProfile}
+                    sx={{ p: `0`, mt: `1rem` }}
+                  >
+                    <Edit sx={{}}></Edit>
+                  </IconButton>
+                </Box>
+
+                <Box sx={{ m: `1rem`, flexGrow: `1` }}></Box>
+                {isEdit ? (
+                  <EditProfileInfo
+                    open={isEdit}
+                    handleClose={handleEditProfileClose}
+                    data={data}
+                  ></EditProfileInfo>
+                ) : null}
               </Box>
             </Box>
           </Box>

@@ -4,16 +4,19 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import { FormControl, TextField } from "@mui/material";
+import { FormControl, IconButton, TextField, styled } from "@mui/material";
 import { TeamContext } from "../context/TeamContext";
+import ImageCropper from "./ImageCropper";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  height: 300,
-  width: 400,
+  height: 400,
+  width: 500,
+  overflowX: "auto",
+  overflowY: "auto",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -21,20 +24,47 @@ const style = {
 };
 
 export default function CreateTeam(props) {
-  const { open, handleClose, submit, name } = props;
+  const { open, handleClose } = props;
   const teamContext = useContext(TeamContext);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [teamProfile, setTeamProfile] = useState(false);
 
-  
+  const handleCloseTeamProfile = () => {
+    setTeamProfile(false);
+  };
+
+  const handleOpenTeamProfile = () => {
+    setTeamProfile(true);
+  };
+
+  const handleName = (e) => {
+    setName(e.target.value);
+  };
+  const handleDescription = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const fetchUser = async () => {
+    const res = await fetch("http://localhost:8080/view/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
 
   const createTeam = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8080/user/team", {
+      const res = await fetch("http://localhost:8080/user/team", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           name: name,
+          description: description,
         }),
       });
       const data = await res.json();
@@ -42,6 +72,7 @@ export default function CreateTeam(props) {
       console.log(data);
       console.log("response");
       console.log(res);
+      handleClose();
     } catch (e) {
       console.log(e.message);
     }
@@ -70,16 +101,29 @@ export default function CreateTeam(props) {
                 overflowX: `hidden`,
               }}
             >
-              <AccountBoxIcon
-                sx={{ fontSize: `70px`, mb: `1rem` }}
-              ></AccountBoxIcon>
+              <IconButton sx={{}}>
+                <AccountBoxIcon
+                  sx={{ fontSize: `70px`, mb: `1rem` }}
+                ></AccountBoxIcon>
+              </IconButton>
+              {/* {teamProfile ? (
+                <ImageCropper handleClose={handleCloseTeamProfile} />
+              ) : (
+                ""
+              )} */}
               <TextField
                 label="Name"
                 placeholder="Enter your team name"
-                onChange={name}
+                onChange={handleName}
                 sx={{ width: `100%`, mb: `1rem` }}
               ></TextField>
-              <Button onClick={submit} variant="contained">
+              <TextField
+                label="Description"
+                placeholder="your description"
+                onChange={handleDescription}
+                sx={{ width: `100%`, mb: `1rem` }}
+              ></TextField>
+              <Button onClick={createTeam} variant="contained">
                 Create
               </Button>
             </Box>

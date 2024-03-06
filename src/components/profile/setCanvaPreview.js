@@ -30,12 +30,12 @@ const setCanvasPreview = (
   ctx.translate(-cropX, -cropY);
   ctx.drawImage(
     image,
-    10,
-    10,
+    0,
+    0,
     image.naturalWidth,
     image.naturalHeight,
-    10,
-    10,
+    0,
+    0,
     image.naturalWidth,
     image.naturalHeight
   );

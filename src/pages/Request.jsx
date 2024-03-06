@@ -1,5 +1,4 @@
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -24,10 +23,22 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState } from "react";
-import { Button, Icon, createTheme } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Icon,
+  Input,
+  InputAdornment,
+  OutlinedInput,
+  TextField,
+  createTheme,
+} from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
+import Search from "../components/request/Search";
+import Card from "../components/request/Card";
 
 const drawerWidth = 240;
 
@@ -157,6 +168,77 @@ const Drawer = styled(MuiDrawer, {
 export default function Request() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [request, setRequest] = useState([]);
+  const [filterRequest, setFilterRequest] = useState(request.team_name);
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    setName(e.target.value);
+  };
+
+  const requestFunction = async () => {
+    const res = await fetch("http://localhost:8080/user/requests", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const data = await res.json();
+    console.log(data);
+    setRequest(data.add_member_requests);
+  };
+
+  useEffect(() => {
+    const result = request.filter((req) => {
+      return req.team_name.toLowerCase().includes(name);
+    });
+    fetchRequest();
+    const refresh = setTimeout(async () => {
+      fetchRequest();
+    }, 30 * 1000);
+
+    setFilterRequest(result);
+    console.log(name);
+    return () => {
+      clearTimeout(refresh);
+    };
+  }, [request]);
+
+  useEffect(() => {}, []);
+
+  const handleLogout = async() => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
+  };
+
+  const fetchRequest = async () => {
+    const res = await fetch("http://localhost:8080/user/requests", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const data = await res.json();
+    console.log(res);
+    console.log(data);
+    setRequest(data.add_member_requests);
+  };
+
+  const getRequest = () => {
+    console.log(request);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -191,12 +273,11 @@ export default function Request() {
           >
             Request
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
-          <Link to={"/"}>
-              <Button variant="contained" sx={{ backgroundColor: `` }}>
-                <LogoutIcon sx={{}}></LogoutIcon>
-              </Button>
-            </Link>
+
+            <Button onClick={handleLogout} variant="contained" sx={{ backgroundColor: `` }}>
+              <LogoutIcon sx={{}}></LogoutIcon>
+            </Button>
+
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -244,13 +325,24 @@ export default function Request() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, minHeight: `100vh`, minWidth: `100vh` }}
+      >
         <DrawerHeader />
-        <Typography paragraph sx={{ height: 100 + "vh" }}>
-          content here
-        </Typography>
+        <Box id="main-content-container" sx={{ p: `2rem` }}>
+          <Box id="serach-request" sx={{ width: `100%` }}>
+            <Search search={handleSearch} />
+          </Box>
+          <Box sx={{ mt: `1rem` }}>
+            <Typography variant="body1">Pending - {request?.length}</Typography>
+          </Box>
+          <Box id="request-card-container" sx={{ mt: `1rem` }}>
+            <Card request={request} requestFunction={requestFunction} />
+            <Button onClick={getRequest}>get</Button>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
 }
-

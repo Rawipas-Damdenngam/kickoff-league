@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import "./FindMatch.css";
 import FindMatchList from "../components/findMatch/FindMatchList";
@@ -249,6 +249,7 @@ export default function FindMatch() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowInfoOpen = () => {
     console.log(showInfo);
@@ -281,6 +282,19 @@ export default function FindMatch() {
     border: "2px solid #000",
     boxShadow: 24,
   };
+  const handleLogout = async() => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -307,12 +321,11 @@ export default function FindMatch() {
           >
             FindMatch
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
-          <Link to={"/"}>
-            <Button variant="contained" sx={{ backgroundColor: `` }}>
+
+            <Button onClick={handleLogout} variant="contained" sx={{ backgroundColor: `` }}>
               <LogoutIcon sx={{}}></LogoutIcon>
             </Button>
-          </Link>
+
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

@@ -52,7 +52,6 @@ export default function ShowSignIn(props) {
           placeholder="Enter email"
           autoFocus
           onChange={username}
-          onKeyDown={(e) => (e.key === "Enter" ? proceedLogin(e) : null)}
         ></TextField>
       </Box>
 
@@ -64,7 +63,6 @@ export default function ShowSignIn(props) {
           label="Password"
           placeholder="Enter password"
           onChange={password}
-          onKeyDown={(e) => (e.key === "Enter" ? proceedLogin(e) : null)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

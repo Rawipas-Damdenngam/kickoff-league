@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import "./TeamInfo.css";
 import Box from "@mui/material/Box";
@@ -24,7 +24,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState } from "react";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -299,12 +300,16 @@ const Drawer = styled(MuiDrawer, {
 
 export default function TeamInfo(props) {
   const { teamName } = props;
+  const { state } = useLocation();
+
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [overView, setOverView] = useState(true);
   const [member, setMember] = useState(false);
   const [competition, setCompetition] = useState(false);
   const [result, setResult] = useState(false);
+  const navigate = useNavigate();
+  const [teamInfo, setTeamInfo] = useState({});
 
   const handleOverviewTab = () => {
     setOverView(true);
@@ -340,6 +345,36 @@ export default function TeamInfo(props) {
   };
   console.log(teamName);
 
+  useEffect(() => {
+    fetchTeamByID();
+  }, []);
+
+  const fetchTeamByID = async () => {
+    const res = await fetch(`http://localhost:8080/view/teams/${state.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log("data here", data);
+    setTeamInfo(data.teams);
+  };
+
+  const handleLogout = async () => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -365,12 +400,14 @@ export default function TeamInfo(props) {
           >
             Team Info
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
-          <Link to={"/"}>
-            <Button variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-          </Link>
+
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            sx={{ backgroundColor: `` }}
+          >
+            <LogoutIcon sx={{}}></LogoutIcon>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -421,10 +458,10 @@ export default function TeamInfo(props) {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
           minHeight: `100vh`,
+          minWidth: `100vh`,
+          flex: `1 1 auto`,
           pb: `5rem`,
-          overflowX: `hidden`,
         }}
       >
         <DrawerHeader />
@@ -458,15 +495,17 @@ export default function TeamInfo(props) {
                   flexWrap: `wrap`,
                 }}
               >
-                <Box sx={{ m: `1rem`, flex: `1,1,auto`, textAlign: `center` }}>
+                <Box sx={{ m: `1rem`, textAlign: `center` }}>
                   <Box
                     sx={{
                       display: `block`,
                       position: `relative`,
                       width: `200px`,
+                      height: `200px`,
                     }}
                   >
                     <img
+                      id="teamProfile"
                       src="src/assets/images/liverPool.jpeg"
                       style={{
                         top: `0`,
@@ -477,19 +516,51 @@ export default function TeamInfo(props) {
                         objectFit: `cover`,
                       }}
                     ></img>
+                    <Box
+                      sx={{
+                        display: `flex`,
+                        border: `1px solid white`,
+                        borderRadius: `50%`,
+                        position: `absolute`,
+                        bottom: `0`,
+                        right: `0`,
+                        backgroundColor: `grey`,
+                        width: `20%`,
+                        height: `15%`,
+                        justifyContent: `center`,
+                        alignItems: `center`,
+                        m: `0.3rem`,
+                      }}
+                    >
+                      <IconButton tabIndex={-1}>
+                        <CameraAltIcon />
+                      </IconButton>
+                      {/* <EditProfileImage
+                        open={editImage}
+                        handleClose={handleEditImageCancel}
+                        updateImage={updateImage}
+                      ></EditProfileImage> */}
+                    </Box>
                   </Box>
                 </Box>
                 <Box sx={{ m: `1rem` }}>
-                  <Box>
+                  <Box
+                    sx={{
+                      border: `1px solid transparent`,
+                      borderRadius: `10px`,
+                      backgroundColor: `white`,
+                      px: `1rem`,
+                    }}
+                  >
                     {/* {teamName.map((name, index) => {
                         return ( */}
                     <Typography
                       // key={index}
                       variant="h3"
-                      sx={{ color: `white` }}
+                      sx={{ color: `black` }}
                     >
                       {/* {name[0]} */}
-                      Team name
+                      {teamInfo.name}
                     </Typography>
                     {/* );
                     })} */}
@@ -576,29 +647,31 @@ export default function TeamInfo(props) {
           </Box>
         </Box>
         <hr></hr>
-        <Box sx={{}}>
-          <Box sx={{}}>
-            <Box sx={{ mt: `2rem`, px: `2rem` }}>
-              <Box sx={{ display: `flex` }}>
-                <Box
-                  sx={{
-                    minHeight: `16rem`,
-                    fontSize: `16px`,
-                    flexGrow: `1`,
-                  }}
-                >
-                  {overView ? (
-                    <TeamInfoOverview></TeamInfoOverview>
-                  ) : member ? (
-                    <TeamInfoMember></TeamInfoMember>
-                  ) : competition ? (
-                    <TeamInfoCompetition></TeamInfoCompetition>
-                  ) : (
-                    <TeamInfoResult></TeamInfoResult>
-                  )}
-                </Box>
-                {/* <Box sx={{ m: `1rem`, flexGrow: `1` }}>2</Box> */}
+        <Box sx={{ display: `flex`, flex: `1 1 auto` }}>
+          <Box
+            sx={{ mt: `2rem`, px: `2rem`, flex: `1 1 auto`, display: `flex` }}
+          >
+            <Box sx={{ display: `flex`, flex: `1 1 auto` }}>
+              <Box
+                sx={{
+                  minHeight: `16rem`,
+                  fontSize: `16px`,
+                  flexGrow: `1`,
+                }}
+              >
+                {overView ? (
+                  <TeamInfoOverview teamInfo={teamInfo}></TeamInfoOverview>
+                ) : member ? (
+                  <TeamInfoMember teamInfo={teamInfo}></TeamInfoMember>
+                ) : competition ? (
+                  <TeamInfoCompetition
+                    teamInfo={teamInfo}
+                  ></TeamInfoCompetition>
+                ) : (
+                  <TeamInfoResult teamInfo={teamInfo}></TeamInfoResult>
+                )}
               </Box>
+              {/* <Box sx={{ m: `1rem`, flexGrow: `1` }}>2</Box> */}
             </Box>
           </Box>
         </Box>

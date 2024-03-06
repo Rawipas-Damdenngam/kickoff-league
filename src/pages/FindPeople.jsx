@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -410,6 +410,9 @@ export default function FindPeople() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
+  const [minAge, setMinAge] = useState("");
+  const [maxAge, setMaxAge] = useState("");
+  const navigate  = useNavigate();
 
   const [filterResults, setFilterResults] = useState([Data.normalUser]);
 
@@ -419,6 +422,15 @@ export default function FindPeople() {
 
   const handleFilterGender = (e) => {
     setGender(e.target.value);
+    console.log(gender);
+  };
+
+  const handleMinAge = (e) => {
+    setMinAge(e.target.value);
+  };
+
+  const handleMaxAge = (e) => {
+    setMaxAge(e.target.value);
   };
 
   useEffect(() => {
@@ -430,7 +442,7 @@ export default function FindPeople() {
     });
     console.log(result);
     setFilterResults(result);
-  }, [name]);
+  }, [name,]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -438,6 +450,19 @@ export default function FindPeople() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+  const handleLogout = async() => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
   };
 
   return (
@@ -460,11 +485,11 @@ export default function FindPeople() {
           <Typography variant="h6" sx={{ flexGrow: 1, minWidth: `200px` }}>
             FindPeople
           </Typography>
-          <Link to={"/"}>
-            <Button variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
+
+            <Button onClick={handleLogout} variant="contained" sx={{}}>
+              <LogoutIcon></LogoutIcon>
             </Button>
-          </Link>
+
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -563,6 +588,7 @@ export default function FindPeople() {
                       sx={{ width: `300px` }}
                       placeholder="Search Players"
                       onChange={handleSearch}
+                      defaultValue=""
                     ></TextField>
                   </Box>
                 </Box>
@@ -588,9 +614,9 @@ export default function FindPeople() {
                       fullWidth
                       label="Gender"
                       select
-                      sx={{}}
                       value={gender}
                       onChange={handleFilterGender}
+                      defaultValue="All"
                     >
                       <MenuItem value="All">All gender</MenuItem>
                       <MenuItem value="Male">Male</MenuItem>
@@ -602,6 +628,8 @@ export default function FindPeople() {
                       fullWidth
                       label="Min Age"
                       placeholder="18"
+                      defaultValue=""
+                      onChange={handleMinAge}
                     ></TextField>
                   </Box>
                   <Box sx={{ width: `12%`, mr: `1rem` }}>
@@ -609,6 +637,8 @@ export default function FindPeople() {
                       fullWidth
                       label="Max Age"
                       placeholder="50"
+                      defaultValue=""
+                      onChange={handleMaxAge}
                     ></TextField>
                   </Box>
                   <Box sx={{ width: `auto`, mr: `1rem` }}>
@@ -655,6 +685,7 @@ export default function FindPeople() {
                                   color: `white`,
                                   flex: `1 1 200px`,
                                   maxWidth: `500px`,
+                                  textAlign: `center`,
                                 }}
                               >
                                 Players
@@ -741,7 +772,7 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      flex: `1 1 100px`,
+                                      flex: `1 1 65px`,
                                       maxWidth: `270px`,
                                     }}
                                   >
@@ -757,7 +788,7 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      flex: `1 1 100px`,
+                                      flex: `1 1 40px`,
                                       maxWidth: `240px`,
                                     }}
                                   >
@@ -771,8 +802,8 @@ export default function FindPeople() {
                                     sx={{
                                       display: `flex`,
                                       alignItems: `center`,
-                                      flex: `1 1 100px`,
-                                      maxWidth: `230px`,
+                                      flex: `1 1 35px`,
+                                      maxWidth: `220px`,
                                     }}
                                   >
                                     <Box>

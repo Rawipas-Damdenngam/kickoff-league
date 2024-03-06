@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -153,10 +153,36 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function News() {
+export default function News(props) {
+  const {id} = props;
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   async () => {
+  //     const res = await fetch(`http://localhost:8080/get/${id}`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     console.log(res);
+  //   };
+  // }, []);
+  const handleLogout = async() => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -191,12 +217,12 @@ export default function News() {
           >
             News
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
-          <Link to={"/"}>
-            <Button variant="contained" sx={{ backgroundColor: `` }}>
+
+
+            <Button onClick={handleLogout} variant="contained" component='label' sx={{ backgroundColor: `` }}>
               <LogoutIcon sx={{}}></LogoutIcon>
             </Button>
-          </Link>
+
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

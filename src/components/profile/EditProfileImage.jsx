@@ -8,11 +8,11 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
-  height: 800,
+  height: 750,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  m:`1rem`
+  m: `1rem`,
 };
 
 export default function EditProfileImage(props) {

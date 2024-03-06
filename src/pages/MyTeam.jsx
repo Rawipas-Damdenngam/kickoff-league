@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -23,7 +23,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect ,useRef } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -164,6 +164,40 @@ export default function MyTeam() {
   const [joinTeamTab, setJoinTeamTab] = useState(false);
   const [teams, setTeams] = useState([]);
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+  const teamProfile = useRef("src/assets/images/manChest.jpeg")
+  const [editProfile, setEditProfile] = useState(false);
+
+  useEffect(() => {
+    getTeam();
+  }, []);
+
+  const getTeam = async () => {
+    const res = await fetch("http://localhost:8080/view/teams", {
+      method: "GET",
+      credentials: "include",
+    });
+    const data = await res.json();
+    setTeams(data.teams);
+  };
+  const trya = () => {
+    console.log(teams);
+  };
+
+  const handleLogout = async () => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
+  };
 
   const fetchUser = async () => {
     const res = await fetch("http://127.0.0.1:8080/user:id", {
@@ -184,6 +218,10 @@ export default function MyTeam() {
   };
   const handleNameChange = (e) => {
     setName(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
   const handleDrawerOpen = () => {
@@ -210,7 +248,6 @@ export default function MyTeam() {
     setJoinTeamTab(true);
   };
 
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -236,12 +273,14 @@ export default function MyTeam() {
           >
             MyTeam
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
-          <Link to={"/"}>
-            <Button variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-          </Link>
+
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            sx={{ backgroundColor: `` }}
+          >
+            <LogoutIcon sx={{}}></LogoutIcon>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -307,10 +346,18 @@ export default function MyTeam() {
             justifyContent: `flex-end`,
           }}
         >
-          <Button onClick={handleCreateTeam} variant="contained">
+          <Button onClick={trya}>get team</Button>
+          <Button
+            sx={{ display: `${joinTeamTab ? `none` : ``}` }}
+            onClick={handleCreateTeam}
+            variant="contained"
+          >
             Create team
           </Button>
         </Box>
+        <Box
+          sx={{ display: `${createTeamTab ? "none" : ""}`, height: `36.5px` }}
+        ></Box>
         <Box
           id="team-tab"
           sx={{
@@ -342,9 +389,11 @@ export default function MyTeam() {
             open={createTeamOpen}
             handleClose={handleCloseCreateTeam}
             name={handleNameChange}
+            description={handleDescriptionChange}
             submit={handleTeamSubmit}
           ></CreateTeam>
           <Box
+            id="my-team=list"
             sx={{
               height: `100%`,
               width: `100%`,

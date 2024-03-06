@@ -10,7 +10,8 @@ import Typography from "@mui/material/Typography";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function ShowNewAcc() {
+export default function ShowNewAcc(props) {
+  const {close} = props;
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -44,11 +45,11 @@ export default function ShowNewAcc() {
         console.log(res);
 
         if (res.status === 200) {
-          navigate("/news");
           setUsername("");
           setPassword("");
           setEmail("");
           setConfirmPassword("");
+          close();
         } else {
           console.log(data.message);
         }

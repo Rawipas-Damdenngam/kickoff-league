@@ -9,7 +9,8 @@ import {
 import React from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-export default function TeamInfoOverview() {
+export default function TeamInfoOverview(props2) {
+  const {teamInfo} = props2;
   const teamNew = [
     {
       title: "1",
@@ -31,15 +32,10 @@ export default function TeamInfoOverview() {
       img: "src/assets/images/liverPool.jpeg",
       description: "lorem",
     },
-    {
-      title: "4",
-      img: "src/assets/images/liverPool.jpeg",
-      description: "lorem",
-    },
   ];
 
   return (
-    <Box sx={{ display: `flex` }}>
+    <Box sx={{ display: `flex`, }}>
       <Box
         sx={{
           flexDirection: `column`,
@@ -127,7 +123,7 @@ export default function TeamInfoOverview() {
                   justifyContent: `space-between`,
                 }}
               >
-                <Typography variant="h4">Team membersip</Typography>
+                <Typography variant="h4">Team membership</Typography>
                 <Typography variant="body1">
                   lorem poem asdajhkdaksdhasjalorem poem asdajhkdaksdhasjalorem
                   poem asdajhkdaksdhasjalorem poem asdajhkdaksdhasjalorem poem

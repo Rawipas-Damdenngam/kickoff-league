@@ -9,7 +9,8 @@ import {
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import React from "react";
 
-export default function Team_info_member() {
+export default function Team_info_member(props2) {
+  const { teamInfo } = props2;
   const members = [
     {
       firstName: "John",
@@ -84,6 +85,13 @@ export default function Team_info_member() {
         }}
       >
         <Box>Social media</Box>
+        <Button
+          onClick={() => {
+            console.log(teamInfo);
+          }}
+        >
+          eiei
+        </Button>
       </Box>
       <Box sx={{ display: `flex`, flexDirection: `column`, flexGrow: `1` }}>
         <Box sx={{ display: `flex`, alignItems: `center`, pb: `1rem` }}>
@@ -91,10 +99,10 @@ export default function Team_info_member() {
             Player(s)
           </Typography>
 
-          <Typography variant="h2">({members.length})</Typography>
+          <Typography variant="h2">{teamInfo.member.length}</Typography>
         </Box>
         <Box sx={{ display: `flex`, gap: `2rem`, flexWrap: `wrap` }}>
-          {members.map((member, index) => {
+          {teamInfo.member.map((member, index) => {
             return (
               <Card key={index} sx={{ maxWidth: `350px`, width: `210px` }}>
                 <CardMedia
@@ -104,8 +112,10 @@ export default function Team_info_member() {
                   image="src/assets/images/profile2.jpeg"
                 ></CardMedia>
                 <CardContent>
-                  <Typography variant="body1">{member.firstName}</Typography>
-                  <Typography variant="h4">{member.lastName}</Typography>
+                  <Typography variant="body1">
+                    {member.first_name_eng}
+                  </Typography>
+                  <Typography variant="h4">{member.last_name_eng}</Typography>
                   <Typography variant="body1">
                     position: {member.position}
                   </Typography>

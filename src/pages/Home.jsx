@@ -1,7 +1,7 @@
 import "./Home.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import {
   Box,
@@ -33,6 +33,8 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import ShowSignIn from "../components/login/Signin";
 import ShowNewAcc from "../components/login/NewAcc";
 import { DataContext } from "../components/context/DataContext";
+import { Sync } from "@mui/icons-material";
+import News from "./news";
 
 export default function Home() {
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -76,8 +78,10 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isNavigate, setIsNavigate] = useState(false);
   const navigate = useNavigate();
-  const dataContext = useContext(DataContext);
+  const dataContext = React.useContext(DataContext);
+  const [user, setUser] = useState({});
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -158,45 +162,76 @@ export default function Home() {
     dataContext.handleId("1");
   };
 
+  const handleNavigateFindMatch = () => {
+    if (isNavigate !== true) {
+      setOpen(true);
+    } else {
+      navigate("/findMatch");
+    }
+  };
+  const handleNavigateFindPeople = () => {
+    if (isNavigate !== true) {
+      setOpen(true);
+    } else {
+      navigate("/findPeople");
+    }
+  };
+  const handleNavigateFindTeam = () => {
+    if (isNavigate !== true) {
+      setOpen(true);
+    } else {
+      navigate("/findTeam");
+    }
+  };
+
   const logIn = async () => {
     try {
-     await fetch("http://localhost:8080/auth/login", {
+      const res = await fetch("http://localhost:8080/auth/login", {
+        withCredentials: true,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "same-origin",
+        credentials: "include",
         body: JSON.stringify({
           email: username,
           password: password,
         }),
-      })
-        .then((response) => {
-         console.log(response);
-        })
-        
+      });
+      console.log(res);
+      console.log(res.data);
+      const data = await res.json();
+      console.log(data);
 
-      if (response.status === 200) {
+      console.log("200 here");
+
+      if (res.status === 200) {
         toast.success(data.message);
         console.log("yay it 200");
+        setIsNavigate(true);
         navigate("/news");
+        localStorage.setItem("id", data.user.ID);
+        localStorage.setItem("role", data.user.role);
+        localStorage.setItem("roleBaseID", data.user.Detail.id);
         setUsername("");
         setPassword("");
       } else {
         console.log("nope it not 200");
         toast.error(data.message);
       }
-      console.log(response);
+      console.log("res");
+      console.log(res);
+      console.log("data");
       console.log(data);
       console.log(data.user.ID);
-      console.log(response.headers);
-      console.log(response.headers.get("Set-Cookie"));
     } catch (e) {
       console.log(e);
     }
   };
 
-  console.log(signIn);
+  // if (isNavigate) {
+  //   navigate("/news");
+  // }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -205,37 +240,65 @@ export default function Home() {
         <Toolbar>
           <Box
             component="section"
-            sx={{ display: "flex", gap: 2, px: 2, flex: `1 0` }}
+            sx={{ display: "flex", gap: 2, px: 2, flex: `1 1 auto` }}
           >
-            <Link to="findMatch" style={{ textDecoration: `none` }}>
+            <Link
+              onClick={handleNavigateFindMatch}
+              style={{
+                textDecoration: `none`,
+              }}
+            >
               <Typography variant="h6" component="div" sx={{ color: "white" }}>
                 ค้นหาการแข่งขัน
               </Typography>
             </Link>
-            <Link to="findTeam" style={{ textDecoration: `none` }}>
+            <Link
+              onClick={handleNavigateFindTeam}
+              style={{ textDecoration: `none` }}
+            >
               <Typography variant="h6" component="div" sx={{ color: "white" }}>
                 ค้นหาทีม
               </Typography>
             </Link>
-            <Link to="findPeople" style={{ textDecoration: `none` }}>
+            <Link
+              onClick={handleNavigateFindPeople}
+              style={{ textDecoration: `none` }}
+            >
               <Typography variant="h6" component="div" sx={{ color: "white" }}>
                 ค้นหาผู้คน
               </Typography>
             </Link>
+            <Button
+              onClick={() => {
+                console.log(user);
+                
+              }}
+              variant="contained"
+            >
+              get user
+            </Button>
           </Box>
           <Box
             component="section"
-            sx={{ flexGrow: 1, justifyContent: "center" }}
+            sx={{ flex: `1 1 auto`, justifyContent: "center" }}
           >
             <Box component="section" sx={{ display: "flex", gap: 1 }}>
               <SportsSoccerIcon sx={{ fontSize: 30 }}></SportsSoccerIcon>
               <Box sx={{ fontSize: 20 }}>Kickoff League</Box>
             </Box>
           </Box>
+          <Box
+            sx={{
+              display: `flex`,
+              flex: ` 1 1 auto`,
+              justifyContent: `flex-end`,
+            }}
+          >
+            <Button onClick={handleOpen} color="inherit">
+              Sign in
+            </Button>
+          </Box>
 
-          <Button onClick={handleOpen} color="inherit">
-            Sign in
-          </Button>
           <Modal
             open={open}
             onClose={handleClose}
@@ -294,7 +357,7 @@ export default function Home() {
                             logIn={logIn}
                           ></ShowSignIn>
                         ) : (
-                          <ShowNewAcc></ShowNewAcc>
+                          <ShowNewAcc close={handleClose}></ShowNewAcc>
                         )}
                       </Box>
                     </Box>
@@ -362,7 +425,15 @@ export default function Home() {
           </Modal>
         </Toolbar>
       </AppBar>
-      <Box component="main" sx={{ flexGrow: 1, minHeight: 100 + "vh" }}>
+      <Box
+        component="main"
+        sx={{
+          flex: `1 1 auto`,
+          flexGrow: 1,
+          minHeight: `100vh`,
+          minWidth: `100vh`,
+        }}
+      >
         <DrawerHeader />
         <Box
           sx={{
@@ -417,6 +488,7 @@ export default function Home() {
                 justifyContent: "center",
                 alignItems: "center",
                 textAlign: "center",
+                flex: `1 1 auto`,
               }}
             >
               <Typography variant="h6" sx={{ pb: 1 }}>
@@ -429,14 +501,21 @@ export default function Home() {
                 Sign in
               </Button>
             </Box>
-            <Box id="image-recommendation">
-              <ImageList sx={{ width: 800, height: 200, ml: 5 }} cols={3}>
+            <Box
+              id="image-recommendation"
+              sx={{ display: `flex`, flex: `1 1 auto`, overflow: `hidden` }}
+            >
+              <ImageList
+                sx={{ width: 800, height: 200, ml: 5, flex: `1 1 auto` }}
+                cols={3}
+              >
                 {itemData.map((item) => (
                   <ImageListItem key={item.img}>
                     <img
                       srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                       src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
                       loading="lazy"
+                      style={{ flex: `1 1 auto` }}
                     />
                   </ImageListItem>
                 ))}

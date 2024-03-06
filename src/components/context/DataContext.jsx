@@ -1,11 +1,25 @@
 import React, { createContext, useState } from "react";
-export const DataContext = createContext();
+export const DataContext = React.createContext({
+  id: "",
+  user: {},
+  handleId: () => {},
+  handleUser: () => {},
+  fetchUser: () => {},
+});
 
-export  function DataProvider(props) {
-  const [id, setId] = useState([]);
+// console.log("is this thing even working?");
+// console.log(DataContext);
+
+export function DataProvider(props) {
+  const [user, setUser] = useState({});
 
   const handleId = (id) => {
     setId(id);
+  };
+
+  const handleUser = (user) => {
+    console.log("Set user to", user);
+    setUser(user);
   };
 
   const fetchUser = async (id) => {
@@ -17,14 +31,18 @@ export  function DataProvider(props) {
     });
   };
 
-  const valueToShare = {
-    fetchUser,
-    handleId,
-    id,
-  };
+  console.log("is this thing even working?", user);
 
   return (
-    <DataContext.Provider value={valueToShare}>
+    <DataContext.Provider
+      value={{
+        fetchUser,
+        handleId,
+        id,
+        user,
+        handleUser,
+      }}
+    >
       {props.children}
     </DataContext.Provider>
   );

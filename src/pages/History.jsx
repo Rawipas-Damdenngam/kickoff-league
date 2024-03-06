@@ -1,5 +1,4 @@
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -27,7 +26,7 @@ import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import { useState } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
@@ -157,6 +156,7 @@ const Drawer = styled(MuiDrawer, {
 export default function KLHistory() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -164,6 +164,19 @@ export default function KLHistory() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+  const handleLogout = async() => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
   };
 
   return (
@@ -191,12 +204,11 @@ export default function KLHistory() {
           >
             History
           </Typography>
-          <Box sx={{ paddingLeft: 110 }}></Box>
-          <Link to={"/"}>
-              <Button variant="contained" sx={{ backgroundColor: `` }}>
-                <LogoutIcon sx={{}}></LogoutIcon>
-              </Button>
-            </Link>
+
+            <Button onClick={handleLogout} variant="contained" sx={{ backgroundColor: `` }}>
+              <LogoutIcon sx={{}}></LogoutIcon>
+            </Button>
+
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -244,7 +256,10 @@ export default function KLHistory() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3,minHeight:`100vh`, minWidth:`100vh` }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, minHeight: `100vh`, minWidth: `100vh` }}
+      >
         <DrawerHeader />
         <Typography paragraph sx={{}}>
           content here
@@ -253,4 +268,3 @@ export default function KLHistory() {
     </Box>
   );
 }
-
