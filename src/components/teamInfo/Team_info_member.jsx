@@ -4,10 +4,12 @@ import {
   Card,
   CardContent,
   CardMedia,
+  IconButton,
   Typography,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Team_info_member(props2) {
   const { teamInfo } = props2;
@@ -73,6 +75,7 @@ export default function Team_info_member(props2) {
       gender: "female",
     },
   ];
+  const navigate = useNavigate();
   return (
     <Box sx={{ display: `flex` }}>
       <Box
@@ -103,6 +106,10 @@ export default function Team_info_member(props2) {
         </Box>
         <Box sx={{ display: `flex`, gap: `2rem`, flexWrap: `wrap` }}>
           {teamInfo.member.map((member, index) => {
+            const handleViewProfile = () => {
+              navigate("/OtherProfile", { state: { id: member.id } });
+            };
+
             return (
               <Card key={index} sx={{ maxWidth: `350px`, width: `210px` }}>
                 <CardMedia
@@ -123,7 +130,7 @@ export default function Team_info_member(props2) {
                     sx={{ display: `flex`, justifyContent: `space-between` }}
                   >
                     <Typography variant="body1">{member.gender}</Typography>
-                    <Box
+                    {/* <Box
                       sx={{
                         display: `flex`,
                         alignItems: `center`,
@@ -140,7 +147,10 @@ export default function Team_info_member(props2) {
                       <ArrowForwardIcon
                         sx={{ fontSize: `15px` }}
                       ></ArrowForwardIcon>
-                    </Box>
+                    </Box> */}
+                    <IconButton onClick={{}}>
+                      <ArrowForwardIcon />
+                    </IconButton>
                   </Box>
                 </CardContent>
               </Card>

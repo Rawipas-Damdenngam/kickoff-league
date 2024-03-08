@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -23,23 +23,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useEffect, useState } from "react";
-import {
-  Button,
-  Icon,
-  Input,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  createTheme,
-} from "@mui/material";
+import { useState } from "react";
+import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Search from "../components/request/Search";
-import Card from "../components/request/Card";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import CreateCompetition from "../components/myCompetition/CreateCompetition";
+import FormCompetition from "../components/myCompetition/FormCompetition";
 
 const drawerWidth = 240;
 
@@ -73,6 +63,11 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
+  },
+  {
+    title: "การแข่งขันของฉัน",
+    icon: <AddLocationAltIcon />,
+    link: "/myCompetition",
   },
   {
     title: "ผลการแข่งขัน",
@@ -166,79 +161,18 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Request() {
+export default function MyCompetition() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [request, setRequest] = useState([]);
-  const [filterRequest, setFilterRequest] = useState(request.team_name);
-  const [name, setName] = useState("");
-  const navigate = useNavigate();
+  const [createTeam, setCreateTeam] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
 
-  const handleSearch = (e) => {
-    setName(e.target.value);
+  const handleOpenForm = () => {
+    setOpenForm(true);
   };
 
-  const requestFunction = async () => {
-    const res = await fetch("http://localhost:8080/user/requests", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const data = await res.json();
-    console.log(data);
-    setRequest(data.add_member_requests);
-  };
-
-  useEffect(() => {
-    const result = request.filter((req) => {
-      return req.team_name.toLowerCase().includes(name);
-    });
-    fetchRequest();
-    const refresh = setTimeout(async () => {
-      fetchRequest();
-    }, 30 * 1000);
-
-    setFilterRequest(result);
-    console.log(name);
-    return () => {
-      clearTimeout(refresh);
-    };
-  }, [request]);
-
-  useEffect(() => {}, []);
-
-  const handleLogout = async() => {
-    const res = await fetch("http://localhost:8080/auth/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    navigate("/");
-    localStorage.clear();
-    const data = await res.json();
-    console.log(data);
-  };
-
-  const fetchRequest = async () => {
-    const res = await fetch("http://localhost:8080/user/requests", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const data = await res.json();
-    console.log(res);
-    console.log(data);
-    setRequest(data.add_member_requests);
-  };
-
-  const getRequest = () => {
-    console.log(request);
+  const handleCloseForm = () => {
+    setOpenForm(false);
   };
 
   const handleDrawerOpen = () => {
@@ -248,6 +182,16 @@ export default function Request() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleCreateTeam = () => {
+    setCreateTeam(true);
+  };
+  const handleCloseCreateTeam = () => {
+    setCreateTeam(false);
+    setOpenForm(true);
+  };
+
+  console.log(createTeam);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -272,13 +216,12 @@ export default function Request() {
             component="div"
             sx={{ flexGrow: 1, width: 200 }}
           >
-            Request
+            My Competition
           </Typography>
-
-            <Button onClick={handleLogout} variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-
+          <Link to="/"></Link>
+          <Button variant="contained" sx={{}}>
+            <LogoutIcon></LogoutIcon>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -328,19 +271,88 @@ export default function Request() {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, minHeight: `100vh`, minWidth: `100vh` }}
+        sx={{
+          display: `flex`,
+          flexDirection: `column`,
+          flexGrow: 1,
+          flex: `1 1 auto`,
+          p: 3,
+          minHeight: `100vh`,
+          minWidth: `100vh`,
+        }}
       >
         <DrawerHeader />
-        <Box id="main-content-container" sx={{ p: `2rem` }}>
-          <Box id="serach-request" sx={{ width: `100%` }}>
-            <Search search={handleSearch} />
+        <Box
+          sx={{
+            display: `flex`,
+            justifyContent: `flex-end`,
+          }}
+        >
+          {/* <Button onClick={trya}>get team</Button> */}
+          <Button sx={{}} onClick={handleCreateTeam} variant="contained">
+            Create Competition
+          </Button>
+        </Box>
+        <Box
+          id="team-tab"
+          sx={{
+            display: `flex`,
+            py: `0.5rem`,
+            gap: `1rem`,
+            borderBottom: `1px solid`,
+          }}
+        >
+          <Box>
+            <Button
+            //   sx={{ color: `${createTeamTab ? "primary" : "black"}` }}
+            //   onClick={handleCreateTeamTab}
+            >
+              My Competition
+            </Button>
           </Box>
-          <Box sx={{ mt: `1rem` }}>
-            <Typography variant="body1">Pending - {request?.length}</Typography>
+          <Box>
+            {/* <Button
+              sx={{ color: `${joinTeamTab ? "primary" : "black"}` }}
+              onClick={handleJoinTeamTab}
+            >
+              Team joined
+            </Button> */}
           </Box>
-          <Box id="request-card-container" sx={{ mt: `1rem` }}>
-            <Card request={request} requestFunction={requestFunction} />
-            <Button onClick={getRequest}>get</Button>
+        </Box>
+        <Box id="team-list">
+          {createTeam && (
+            <CreateCompetition
+              handleClose={handleCloseCreateTeam}
+              openForm={handleOpenForm}
+            ></CreateCompetition>
+          )}
+          {openForm && (
+            <FormCompetition handleClose={handleCloseForm}></FormCompetition>
+          )}
+
+          <Box
+            id="my-team=list"
+            sx={{
+              height: `100%`,
+              width: `100%`,
+              flex: ` 1 1 auto`,
+              flexGrow: `0`,
+              flexWrap: `wrap`,
+              overflowY: `auto`,
+              overflowX: `hidden`,
+              p: `1rem`,
+              display: `flex`,
+              gap: `1rem`,
+            }}
+          >
+            {/* <MyteamList teams={teams}></MyteamList> */}
+            {/* <Button
+              onClick={() => {
+                console.log(teams);
+              }}
+            >
+              test team
+            </Button> */}
           </Box>
         </Box>
       </Box>

@@ -42,6 +42,7 @@ import {
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Data from "../../mockUP.json";
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const drawerWidth = 240;
 
@@ -75,6 +76,11 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
+  },
+  {
+    title: "การแข่งขันของฉัน",
+    icon: <AddLocationAltIcon/>,
+    link: "/myCompetition",
   },
   {
     title: "ผลการแข่งขัน",
@@ -588,14 +594,7 @@ export default function FindMatch() {
               <Box sx={{ width: `100%`, height: `100%` }}>
                 <img className="bg3"></img>
               </Box>
-              {showInfo ? (
-                <MatchInfo
-                  showInfo={showInfo}
-                  showInfoClose={handleShowInfoClose}
-                  Data={Data}
-                  style={style}
-                ></MatchInfo>
-              ) : null}
+
             </Box>
           </Box>
         </Box>

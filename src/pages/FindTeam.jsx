@@ -35,6 +35,7 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import GroupsIcon from "@mui/icons-material/Groups";
 import Card from "../components/findTeam/Card";
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const drawerWidth = 240;
 
@@ -68,6 +69,11 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
+  },
+  {
+    title: "การแข่งขันของฉัน",
+    icon: <AddLocationAltIcon/>,
+    link: "/myCompetition",
   },
   {
     title: "ผลการแข่งขัน",

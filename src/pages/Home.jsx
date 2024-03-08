@@ -35,6 +35,7 @@ import ShowNewAcc from "../components/login/NewAcc";
 import { DataContext } from "../components/context/DataContext";
 import { Sync } from "@mui/icons-material";
 import News from "./news";
+import ShowNewOrganize from "../components/login/NewOrganize";
 
 export default function Home() {
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -148,6 +149,7 @@ export default function Home() {
   const handleNewAcc = () => {
     setNewAcc(true);
     setSignIn(false);
+    setNewOrg(false);
   };
 
   const [signIn, setSignIn] = useState(true);
@@ -155,8 +157,16 @@ export default function Home() {
   const handleSignIn = () => {
     setSignIn(true);
     setNewAcc(false);
+    setNewOrg(false);
   };
   const [newAcc, setNewAcc] = useState(false);
+  const [newOrg, setNewOrg] = useState(false);
+
+  const handleNewOrg = () => {
+    setNewOrg(true);
+    setNewAcc(false);
+    setSignIn(false);
+  };
 
   const handleID = () => {
     dataContext.handleId("1");
@@ -205,17 +215,29 @@ export default function Home() {
 
       console.log("200 here");
 
-      if (res.status === 200) {
+      if (res.status === 200 && data.user.role === "normal") {
         toast.success(data.message);
         console.log("yay it 200");
         setIsNavigate(true);
         navigate("/news");
-        localStorage.setItem("id", data.user.ID);
+        localStorage.setItem("id", data.user.id);
         localStorage.setItem("role", data.user.role);
-        localStorage.setItem("roleBaseID", data.user.Detail.id);
+        localStorage.setItem("roleBaseID", data.user.normal_user_id);
         setUsername("");
         setPassword("");
-      } else {
+
+      } else if (res.status === 200 && data.user.role === "organizer") {
+        toast.success(data.message);
+        console.log("yay it 200");
+        setIsNavigate(true);
+        navigate("/news");
+        localStorage.setItem("id", data.user.id);
+        localStorage.setItem("role", data.user.role);
+        localStorage.setItem("roleBaseID", data.user.organizer_id);
+        setUsername("");
+        setPassword("");
+      } 
+      else {
         console.log("nope it not 200");
         toast.error(data.message);
       }
@@ -271,7 +293,6 @@ export default function Home() {
             <Button
               onClick={() => {
                 console.log(user);
-                
               }}
               variant="contained"
             >
@@ -347,6 +368,17 @@ export default function Home() {
                       >
                         New account
                       </Button>
+                      <Button
+                        variant="text"
+                        sx={{
+                          color: `${newOrg ? "blue" : "black"}`,
+                          p: 2,
+                          position: "relative",
+                        }}
+                        onClick={handleNewOrg}
+                      >
+                        New Organizer
+                      </Button>
                     </Box>
                     <Box id="sign in form">
                       <Box sx={{ p: 2 }}>
@@ -356,8 +388,10 @@ export default function Home() {
                             password={handlePasswordChange}
                             logIn={logIn}
                           ></ShowSignIn>
-                        ) : (
+                        ) : newAcc ? (
                           <ShowNewAcc close={handleClose}></ShowNewAcc>
+                        ) : (
+                          <ShowNewOrganize close={handleClose} />
                         )}
                       </Box>
                     </Box>

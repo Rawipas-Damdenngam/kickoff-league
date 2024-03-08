@@ -21,7 +21,6 @@ export default function MatchInfo(props) {
   const { showInfo, showInfoClose, Data, style } = props;
   return (
     <Box>
-      <Modal open={showInfo} onClose={showInfoClose}>
         <Box sx={style}>
           <Box sx={{ overflowY: `auto`, overflowX: `hidden` }}>
             <Box sx={{ flexGrow: `0` }}>
@@ -226,7 +225,6 @@ export default function MatchInfo(props) {
             </Box>
           </Box>
         </Box>
-      </Modal>
     </Box>
   );
 }

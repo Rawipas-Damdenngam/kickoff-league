@@ -1,12 +1,17 @@
 import { Box, Card, CardMedia, Typography, CardContent } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function findMatchList(props) {
   const { competition, infoOpen, infoClose } = props;
+  const navigate = useNavigate();
+  const handleMatchInfo = () => {
+    navigate("/matchInfo");
+  };
   return (
     <Box>
       <Card
-        onClick={infoOpen}
+        onClick={handleMatchInfo}
         sx={{
           maxWidth: `345px`,
           ":hover": { backgroundColor: `lightblue` },

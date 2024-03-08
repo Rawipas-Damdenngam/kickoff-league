@@ -20,6 +20,9 @@ import Home from "./pages/Home.jsx";
 import TeamProvider from "./components/context/TeamContext.jsx";
 import TeamInfo from "./pages/TeamInfo.jsx";
 import { DataProvider } from "./components/context/DataContext.jsx";
+import OtherProfile from "./components/otherProfile/otherProfile.jsx";
+import MatchInfo from "./components/findMatch/MatchInfo.jsx";
+import MyCompetition from "./pages/MyCompetition.jsx";
 
 const router = createBrowserRouter([
   {
@@ -82,6 +85,18 @@ const router = createBrowserRouter([
     path: "/teamInfo",
     element: <TeamInfo />,
   },
+  {
+    path: "/matchInfo",
+    element: <MatchInfo />,
+  },
+  {
+    path: "/myCompetition",
+    element: <MyCompetition/>,
+  },
+  // {
+  //   path: "/OtherProfile",
+  //   element: <OtherProfile />,
+  // },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

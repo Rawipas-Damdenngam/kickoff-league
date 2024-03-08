@@ -42,6 +42,7 @@ import TeamInfoOverview from "../components/teamInfo/Team_info_overview";
 import TeamInfoMember from "../components/teamInfo/Team_info_member";
 import TeamInfoCompetition from "../components/teamInfo/Team_info_competition";
 import TeamInfoResult from "../components/teamInfo/Team_info_result";
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const drawerWidth = 240;
 
@@ -75,6 +76,11 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
+  },
+  {
+    title: "การแข่งขันของฉัน",
+    icon: <AddLocationAltIcon />,
+    link: "/myCompetition",
   },
   {
     title: "ผลการแข่งขัน",

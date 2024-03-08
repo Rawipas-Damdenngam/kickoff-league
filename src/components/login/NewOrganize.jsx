@@ -10,10 +10,11 @@ import Typography from "@mui/material/Typography";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function ShowNewAcc(props) {
+export default function ShowNewOrganize(props) {
   const { close } = props;
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -21,23 +22,25 @@ export default function ShowNewAcc(props) {
   const [signIn, setSignIn] = useState(true);
   const [newAcc, setNewAcc] = useState(false);
   const navigate = useNavigate();
-  const [role, setRole] = useState("normal");
 
   const signUp = async () => {
     try {
       if (validate) {
-        const res = await fetch("http://127.0.0.1:8080/auth/register/normal", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            username: username,
-            password: password,
-            role: role,
-          }),
-        });
+        const res = await fetch(
+          "http://127.0.0.1:8080/auth/register/organizer",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+              name: username,
+              phone: phone,
+            }),
+          }
+        );
         const data = await res.json();
         console.log("data");
         console.log(data);
@@ -49,6 +52,7 @@ export default function ShowNewAcc(props) {
           setPassword("");
           setEmail("");
           setConfirmPassword("");
+          setPhone("");
           close();
         } else {
           toast.error(data.message, { position: "top-center" });
@@ -115,14 +119,7 @@ export default function ShowNewAcc(props) {
 
   return (
     <Box sx={{ width: `100%` }}>
-      <Box
-        sx={{
-          display: `flex`,
-          flexDirection: `column`,
-          gap: `0.5rem`,
-          my: `0.5rem`,
-        }}
-      >
+      <Box sx={{ my:`0.5rem`, display: `flex`, flexDirection: `column`, gap: `0.5rem` }}>
         <TextField
           sx={{ width: `100%`, flex: `1 1 auto` }}
           type="text"
@@ -133,9 +130,16 @@ export default function ShowNewAcc(props) {
         ></TextField>
         <TextField
           type="text"
-          label="Username"
-          placeholder="Enter username"
+          label="Organizer Name"
+          placeholder="Enter Organizer Name"
           onChange={(e) => setUsername(e.target.value)}
+          sx={{ width: `100%`, flex: `1 1 auto` }}
+        ></TextField>
+        <TextField
+          type="text"
+          label="Phone"
+          placeholder="Enter Phone Number"
+          onChange={(e) => setPhone(e.target.value)}
           sx={{ width: `100%`, flex: `1 1 auto` }}
         ></TextField>
       </Box>

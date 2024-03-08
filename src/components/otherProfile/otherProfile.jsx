@@ -1,7 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import React, { useContext } from "react";
-import "./Profile.css";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -44,11 +43,7 @@ import {
   Edit,
 } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Data from "../../mockUP.json";
-import EditProfileImage from "../components/profile/EditProfileImage";
-import Resizer from "react-image-file-resizer";
-import EditProfileInfo from "../components/profile/EditProfileInfo";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+
 
 const drawerWidth = 240;
 
@@ -82,10 +77,6 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
-  },{
-    title: "การแข่งขันของฉัน",
-    icon: <AddLocationAltIcon/>,
-    link: "/myCompetition",
   },
   {
     title: "ผลการแข่งขัน",
@@ -179,36 +170,33 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Profile() {
+export default function OtherProfile() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const [data, setData] = useState({});
   const [userData, setUserData] = useState({});
   const [realData, setRealData] = useState({});
   const currentDate = new Date();
-  const birthDate = new Date(userData.normal_user?.born);
+  const birthDate = new Date(userData.Detail?.born);
   const age = currentDate.getFullYear() - birthDate.getFullYear();
 
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const id = localStorage.getItem("id");
-        // const userID = JSON.parse(id);
-        console.log("id");
-        console.log(id);
-        // console.log("userID");
-        // console.log(userID.normal_user.id);
-
-        const res = await fetch(`http://localhost:8080/view/users/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const res = await fetch(
+          `http://localhost:8080/view/users/${state.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
         const data = await res.json().then();
         console.log(data);
@@ -235,112 +223,6 @@ export default function Profile() {
     console.log(data);
   };
 
-  const handleEditProfile = async () => {
-    const id = localStorage.getItem("id");
-    const res = await fetch(`http://localhost:8080/view/users/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const data = await res.json();
-    console.log(data);
-    setData(data);
-    setIsEdit(true);
-  };
-
-  const handleEditProfileClose = () => {
-    setIsEdit(false);
-  };
-
-  const profile = useRef("src/assets/images/profile1.jpeg");
-  const [editImage, setEditImage] = useState(false);
-
-  function dataURItoBlob(dataURI) {
-    // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-    var byteString = atob(dataURI.split(",")[1]);
-
-    // separate out the mime component
-    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-
-    // write the bytes of the string to an ArrayBuffer
-    var ab = new ArrayBuffer(byteString.length);
-
-    // create a view into the buffer
-    var ia = new Uint8Array(ab);
-
-    // set the bytes of the buffer to the correct values
-    for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-
-    // write the ArrayBuffer to a blob, and you're done
-    var blob = new Blob([ab], { type: mimeString });
-    return blob;
-  }
-
-  const resizeFile = (file) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        300,
-        300,
-        "JPEG",
-        100,
-        0,
-        (uri) => {
-          resolve(uri);
-        },
-        "blob"
-      );
-    });
-
-  console.log("current");
-  console.log(profile.current);
-
-  async function exportImage() {
-    const blob = dataURItoBlob(profile.current);
-    const resizedImage = await resizeFile(blob);
-
-    if (profile) {
-      const formData = new FormData();
-      formData.append("image", resizedImage);
-      try {
-        const res = await fetch("http://localhost:8080/user/image/profile  ", {
-          method: "PUT",
-          body: formData,
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (res.status === 200) {
-        } else {
-          console.log(data.message);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }
-
-  async function updateImage(src) {
-    profile.current = src;
-    exportImage();
-  }
-
-  // const handleLogout = () => {
-  //   navigate("/");
-  //   localStorage.clear();
-  // };
-
-  const handleEditImage = () => {
-    setEditImage(true);
-  };
-  const handleEditImageCancel = () => {
-    setEditImage(false);
-  };
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -348,18 +230,6 @@ export default function Profile() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -405,7 +275,7 @@ export default function Profile() {
           <Button
             variant="contained"
             onClick={() => {
-              console.log(realData.normal_user.born);
+              console.log(realData.Detail.born);
             }}
           >
             born
@@ -563,9 +433,9 @@ export default function Profile() {
                         borderRadius: `10px`,
                       }}
                     >
-                      {userData.normal_user?.first_name_eng +
+                      {userData.Detail?.first_name_eng +
                         " " +
-                        userData.normal_user?.last_name_eng}
+                        userData.Detail?.last_name_eng}
                     </Typography>
                   </Box>
                 </Box>
@@ -665,7 +535,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.description}
+                                {userData.Detail?.description}
                               </Typography>
                             </Box>
                           </Box>
@@ -688,7 +558,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography key="nation" sx={{}}>
-                                {userData.normal_user?.nationality}
+                                {userData.Detail?.nationality}
                               </Typography>
                             </Box>
                           </Box>
@@ -736,7 +606,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.phone}
+                                {userData.Detail?.phone}
                               </Typography>
                             </Box>
                           </Box>
@@ -782,7 +652,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.height + " " + "cm"}
+                                {userData.Detail?.height + " " + "cm"}
                               </Typography>
                             </Box>
                           </Box>
@@ -806,7 +676,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.weight + " " + "kg"}
+                                {userData.Detail?.weight + " " + "kg"}
                               </Typography>
                             </Box>
                           </Box>
@@ -830,7 +700,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.position}
+                                {userData.Detail?.position}
                               </Typography>
                             </Box>
                           </Box>
@@ -854,7 +724,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.sex}
+                                {userData.Detail?.sex}
                               </Typography>
                             </Box>
                           </Box>
