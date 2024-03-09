@@ -23,6 +23,7 @@ import { DataProvider } from "./components/context/DataContext.jsx";
 import OtherProfile from "./components/otherProfile/otherProfile.jsx";
 import MatchInfo from "./components/findMatch/MatchInfo.jsx";
 import MyCompetition from "./pages/MyCompetition.jsx";
+import CreateCompetition from "./pages/CreateCompetition.jsx";
 
 const router = createBrowserRouter([
   {
@@ -91,7 +92,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/myCompetition",
-    element: <MyCompetition/>,
+    element: <MyCompetition />,
+  },
+  {
+    path: "/createCompetition",
+    element: <CreateCompetition />,
   },
   // {
   //   path: "/OtherProfile",

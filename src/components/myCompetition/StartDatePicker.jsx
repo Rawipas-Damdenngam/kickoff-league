@@ -1,0 +1,23 @@
+import { useState } from "react";
+import dayjs from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
+export default function StartDatePickerValue(props2) {
+  const { handleChange } = props2;
+  const [value, setValue] = useState(dayjs());
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={["DatePicker"]}>
+        <DatePicker
+          label="Start Date"
+          value={value}
+          onChange={handleChange}
+        />
+      </DemoContainer>
+    </LocalizationProvider>
+  );
+}

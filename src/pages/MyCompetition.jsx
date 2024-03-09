@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -28,8 +28,8 @@ import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
-import CreateCompetition from "../components/myCompetition/CreateCompetition";
-import FormCompetition from "../components/myCompetition/FormCompetition";
+import CreateCompetition from "../components/myCompetition/ChoseSport";
+import FormCompetition from "../components/myCompetition/CompetitionInfo";
 
 const drawerWidth = 240;
 
@@ -166,6 +166,7 @@ export default function MyCompetition() {
   const [open, setOpen] = useState(false);
   const [createTeam, setCreateTeam] = useState(false);
   const [openForm, setOpenForm] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -184,7 +185,7 @@ export default function MyCompetition() {
   };
 
   const handleCreateTeam = () => {
-    setCreateTeam(true);
+    navigate("/createCompetition");
   };
   const handleCloseCreateTeam = () => {
     setCreateTeam(false);
@@ -320,16 +321,7 @@ export default function MyCompetition() {
           </Box>
         </Box>
         <Box id="team-list">
-          {createTeam && (
-            <CreateCompetition
-              handleClose={handleCloseCreateTeam}
-              openForm={handleOpenForm}
-            ></CreateCompetition>
-          )}
-          {openForm && (
-            <FormCompetition handleClose={handleCloseForm}></FormCompetition>
-          )}
-
+          list here
           <Box
             id="my-team=list"
             sx={{
