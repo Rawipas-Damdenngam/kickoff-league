@@ -48,13 +48,22 @@ export default function CompetitionDetail() {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField id="teamSize" label="Team size" select fullWidth defaultValue={9}>
+          <TextField
+            id="teamSize"
+            label="Team size"
+            select
+            fullWidth
+            defaultValue={9}
+          >
             <MenuItem value={9}>9</MenuItem>
             <MenuItem value={11}>11</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={12} md={6}>
-          
+          <TextField
+            label="Field"
+            placeholder="Turf, Artificial turf "
+          ></TextField>
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -66,36 +75,6 @@ export default function CompetitionDetail() {
             rows={4}
             autoComplete="description"
           />
-        </Grid>
-        <Grid item xs={12}>
-          <Typography>Image</Typography>
-          <Button
-            sx={{ mt: 1 }}
-            component="label"
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload file
-            <VisuallyHiddenInput
-              onChange={handleChange}
-              type="file"
-              ref={inputRef}
-            />
-          </Button>
-          <Box
-            sx={{
-              display: `${image ? `block` : `none`}`,
-              mt: `1rem`,
-              width: `100%`,
-              height: `200px`,
-            }}
-          >
-            <img
-              src={image ? URL.createObjectURL(image) : null}
-              style={{ width: `100%`, height: `100%`, objectFit: `contain` }}
-            ></img>
-          </Box>
         </Grid>
       </Grid>
     </React.Fragment>

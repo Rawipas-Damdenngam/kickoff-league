@@ -27,7 +27,10 @@ import { useState } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import AllTeam from "../components/match/AllTeam";
+import MatchBracket from "../components/match/Bracket";
+import Table from "../components/match/Table";
 
 const drawerWidth = 240;
 
@@ -61,9 +64,10 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
-  },{
+  },
+  {
     title: "การแข่งขันของฉัน",
-    icon: <AddLocationAltIcon/>,
+    icon: <AddLocationAltIcon />,
     link: "/myCompetition",
   },
   {
@@ -266,12 +270,19 @@ export default function Schedule() {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, minHeight: `100vh`, minWidth: `100vh` }}
+        sx={{
+          p: 3,
+          flex: `1 1 auto`,
+          minHeight: `100vh`,
+          minWidth: `100vh`,
+        }}
       >
         <DrawerHeader />
-        <Typography paragraph sx={{}}>
-          content here
-        </Typography>
+        <AllTeam />
+        <hr />
+        <MatchBracket />
+        <hr />
+        <Table/>
       </Box>
     </Box>
   );
