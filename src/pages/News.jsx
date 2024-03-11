@@ -28,7 +28,9 @@ import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { toast, ToastContainer } from "react-toastify";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import AllTeam from "../components/match/AllTeam";
+import Table from "../components/match/Table";
 const drawerWidth = 240;
 
 const drawerItems = [
@@ -61,9 +63,10 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
-  },{
+  },
+  {
     title: "การแข่งขันของฉัน",
-    icon: <AddLocationAltIcon/>,
+    icon: <AddLocationAltIcon />,
     link: "/myCompetition",
   },
   {
@@ -159,7 +162,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function News(props) {
-  const {id} = props;
+  const { id } = props;
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -175,7 +178,7 @@ export default function News(props) {
   //     console.log(res);
   //   };
   // }, []);
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     const res = await fetch("http://localhost:8080/auth/logout", {
       method: "POST",
       headers: {
@@ -223,11 +226,14 @@ export default function News(props) {
             News
           </Typography>
 
-
-            <Button onClick={handleLogout} variant="contained" component='label' sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            component="label"
+            sx={{ backgroundColor: `` }}
+          >
+            <LogoutIcon sx={{}}></LogoutIcon>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -277,10 +283,37 @@ export default function News(props) {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, minHeight: `100vh`, minWidth: `100vh` }}
+        sx={{
+          flex: `1 1 auto`,
+          p: 3,
+          minHeight: `100vh`,
+          minWidth: `100vh`,
+          overflow: `hidden`,
+          whiteSpace: `wrap`,
+        }}
       >
         <DrawerHeader />
-        <Box sx={{}}>content</Box>
+        <Typography variant="h2" sx={{ my: `1rem` }}>
+          Team Participant
+        </Typography>
+        <AllTeam />
+        <Box sx={{ borderTop: `1px solid`, my: `1rem` }}></Box>
+        <Typography variant="h2" sx={{ my: `1rem` }}>
+          Group Stage
+        </Typography>
+        <Box
+          sx={{
+            display: `flex`,
+            justifyContent: `flex-start`,
+            gap: `1rem`,
+            flexWrap: `wrap`,
+          }}
+        >
+          {" "}
+          <Table />
+          <Table />
+          <Table />
+        </Box>
       </Box>
       <ToastContainer />
     </Box>

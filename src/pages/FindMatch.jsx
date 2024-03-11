@@ -42,7 +42,7 @@ import {
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Data from "../../mockUP.json";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 
 const drawerWidth = 240;
 
@@ -79,7 +79,7 @@ const drawerItems = [
   },
   {
     title: "การแข่งขันของฉัน",
-    icon: <AddLocationAltIcon/>,
+    icon: <AddLocationAltIcon />,
     link: "/myCompetition",
   },
   {
@@ -288,7 +288,7 @@ export default function FindMatch() {
     border: "2px solid #000",
     boxShadow: 24,
   };
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     const res = await fetch("http://localhost:8080/auth/logout", {
       method: "POST",
       headers: {
@@ -325,13 +325,16 @@ export default function FindMatch() {
             component="div"
             sx={{ flexGrow: 1, width: 200 }}
           >
-            FindMatch
+            Find Match
           </Typography>
 
-            <Button onClick={handleLogout} variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            sx={{ backgroundColor: `` }}
+          >
+            <LogoutIcon sx={{}}></LogoutIcon>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -594,7 +597,6 @@ export default function FindMatch() {
               <Box sx={{ width: `100%`, height: `100%` }}>
                 <img className="bg3"></img>
               </Box>
-
             </Box>
           </Box>
         </Box>

@@ -29,6 +29,9 @@ export default function CreateTeam(props) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [teamProfile, setTeamProfile] = useState(false);
+  const idString = localStorage.getItem("id");
+  const id = parseInt(idString);
+
 
   const handleCloseTeamProfile = () => {
     setTeamProfile(false);
@@ -64,6 +67,7 @@ export default function CreateTeam(props) {
         credentials: "include",
         body: JSON.stringify({
           name: name,
+          owner_id: id,
           description: description,
         }),
       });
@@ -112,6 +116,7 @@ export default function CreateTeam(props) {
                 ""
               )} */}
               <TextField
+                required
                 label="Name"
                 placeholder="Enter your team name"
                 onChange={handleName}

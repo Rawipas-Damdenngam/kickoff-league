@@ -294,7 +294,7 @@ export default function FindTeam() {
             component="div"
             sx={{ flexGrow: 1, width: 200 }}
           >
-            FindTeam
+            Find Team
           </Typography>
 
           <Button

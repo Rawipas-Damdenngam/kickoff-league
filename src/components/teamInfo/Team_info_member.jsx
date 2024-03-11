@@ -88,13 +88,13 @@ export default function Team_info_member(props2) {
         }}
       >
         <Box>Social media</Box>
-        <Button
+        {/* <Button
           onClick={() => {
             console.log(teamInfo);
           }}
         >
           eiei
-        </Button>
+        </Button> */}
       </Box>
       <Box sx={{ display: `flex`, flexDirection: `column`, flexGrow: `1` }}>
         <Box sx={{ display: `flex`, alignItems: `center`, pb: `1rem` }}>

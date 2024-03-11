@@ -39,7 +39,7 @@ import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Search from "../components/request/Search";
 import Card from "../components/request/Card";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 
 const drawerWidth = 240;
 
@@ -214,7 +214,7 @@ export default function Request() {
 
   useEffect(() => {}, []);
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     const res = await fetch("http://localhost:8080/auth/logout", {
       method: "POST",
       headers: {
@@ -280,10 +280,13 @@ export default function Request() {
             Request
           </Typography>
 
-            <Button onClick={handleLogout} variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            sx={{ backgroundColor: `` }}
+          >
+            <LogoutIcon sx={{}}></LogoutIcon>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -345,7 +348,7 @@ export default function Request() {
           </Box>
           <Box id="request-card-container" sx={{ mt: `1rem` }}>
             <Card request={request} requestFunction={requestFunction} />
-            <Button onClick={getRequest}>get</Button>
+            {/* <Button onClick={getRequest}>get</Button> */}
           </Box>
         </Box>
       </Box>

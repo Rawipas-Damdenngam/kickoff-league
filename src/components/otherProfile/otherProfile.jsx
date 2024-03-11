@@ -264,22 +264,22 @@ export default function OtherProfile() {
           >
             <LogoutIcon sx={{}}></LogoutIcon>
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             onClick={() => {
               console.log(realData);
             }}
           >
             real data
-          </Button>
-          <Button
+          </Button> */}
+          {/* <Button
             variant="contained"
             onClick={() => {
               console.log(realData.Detail.born);
             }}
           >
             born
-          </Button>
+          </Button> */}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

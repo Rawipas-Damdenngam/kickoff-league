@@ -18,6 +18,7 @@
     "@mui/x-date-pickers": "^6.19.6",
     "cors": "^2.8.5",
     "dayjs": "^1.11.10",
+    "reacket": "^1.0.2",
     "react": "^18.2.0",
     "react-brackets": "^0.4.7",
     "react-dom": "^18.2.0",

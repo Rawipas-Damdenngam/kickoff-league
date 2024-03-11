@@ -271,18 +271,21 @@ export default function Schedule() {
       <Box
         component="main"
         sx={{
+          display: `flex`,
+          flexDirection: `column`,
           p: 3,
           flex: `1 1 auto`,
           minHeight: `100vh`,
           minWidth: `100vh`,
+          overflow: "auto",
         }}
       >
         <DrawerHeader />
-        <AllTeam />
-        <hr />
+        <Typography variant="h2" sx={{ my: `1rem` }}>
+          Match Schedule
+        </Typography>
+
         <MatchBracket />
-        <hr />
-        <Table/>
       </Box>
     </Box>
   );

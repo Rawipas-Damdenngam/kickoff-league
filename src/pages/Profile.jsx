@@ -48,7 +48,7 @@ import Data from "../../mockUP.json";
 import EditProfileImage from "../components/profile/EditProfileImage";
 import Resizer from "react-image-file-resizer";
 import EditProfileInfo from "../components/profile/EditProfileInfo";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 
 const drawerWidth = 240;
 
@@ -82,9 +82,10 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
-  },{
+  },
+  {
     title: "การแข่งขันของฉัน",
-    icon: <AddLocationAltIcon/>,
+    icon: <AddLocationAltIcon />,
     link: "/myCompetition",
   },
   {
@@ -189,7 +190,7 @@ export default function Profile() {
   const [userData, setUserData] = useState({});
   const [realData, setRealData] = useState({});
   const currentDate = new Date();
-  const birthDate = new Date(userData.normal_user?.born);
+  const birthDate = new Date(userData.detail?.born);
   const age = currentDate.getFullYear() - birthDate.getFullYear();
 
   useEffect(() => {
@@ -197,7 +198,6 @@ export default function Profile() {
       const fetchData = async () => {
         const id = localStorage.getItem("id");
         // const userID = JSON.parse(id);
-        console.log("id");
         console.log(id);
         // console.log("userID");
         // console.log(userID.normal_user.id);
@@ -394,22 +394,22 @@ export default function Profile() {
           >
             <LogoutIcon sx={{}}></LogoutIcon>
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             onClick={() => {
-              console.log(realData);
+              console.log(userData);
             }}
           >
             real data
-          </Button>
-          <Button
+          </Button> */}
+          {/* <Button
             variant="contained"
             onClick={() => {
               console.log(realData.normal_user.born);
             }}
           >
             born
-          </Button>
+          </Button> */}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -563,9 +563,9 @@ export default function Profile() {
                         borderRadius: `10px`,
                       }}
                     >
-                      {userData.normal_user?.first_name_eng +
+                      {userData.detail?.first_name_eng +
                         " " +
-                        userData.normal_user?.last_name_eng}
+                        userData.detail?.last_name_eng}
                     </Typography>
                   </Box>
                 </Box>
@@ -665,7 +665,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.description}
+                                {userData.detail?.description}
                               </Typography>
                             </Box>
                           </Box>
@@ -688,7 +688,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography key="nation" sx={{}}>
-                                {userData.normal_user?.nationality}
+                                {userData.detail?.nationality}
                               </Typography>
                             </Box>
                           </Box>
@@ -736,7 +736,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.phone}
+                                {userData.detail?.phone}
                               </Typography>
                             </Box>
                           </Box>
@@ -782,7 +782,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.height + " " + "cm"}
+                                {userData.detail?.height + " " + "cm"}
                               </Typography>
                             </Box>
                           </Box>
@@ -806,7 +806,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.weight + " " + "kg"}
+                                {userData.detail?.weight + " " + "kg"}
                               </Typography>
                             </Box>
                           </Box>
@@ -830,7 +830,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.position}
+                                {userData.detail?.position}
                               </Typography>
                             </Box>
                           </Box>
@@ -854,7 +854,7 @@ export default function Profile() {
                               }}
                             >
                               <Typography sx={{}}>
-                                {userData.normal_user?.sex}
+                                {userData.detail?.sex}
                               </Typography>
                             </Box>
                           </Box>

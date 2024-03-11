@@ -27,7 +27,8 @@ import { useState } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import Score from "../components/match/Score";
 
 const drawerWidth = 240;
 
@@ -61,9 +62,10 @@ const drawerItems = [
     title: "คำขอ",
     icon: <MailIcon />,
     link: "/request",
-  },{
+  },
+  {
     title: "การแข่งขันของฉัน",
-    icon: <AddLocationAltIcon/>,
+    icon: <AddLocationAltIcon />,
     link: "/myCompetition",
   },
   {
@@ -170,7 +172,7 @@ export default function Scoreboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     const res = await fetch("http://localhost:8080/auth/logout", {
       method: "POST",
       headers: {
@@ -207,13 +209,16 @@ export default function Scoreboard() {
             component="div"
             sx={{ flexGrow: 1, width: 200 }}
           >
-            ScoreBoard
+            Scoreboard
           </Typography>
 
-            <Button onClick={handleLogout} variant="contained" sx={{ backgroundColor: `` }}>
-              <LogoutIcon sx={{}}></LogoutIcon>
-            </Button>
-
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            sx={{ backgroundColor: `` }}
+          >
+            <LogoutIcon sx={{}}></LogoutIcon>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -266,9 +271,20 @@ export default function Scoreboard() {
         sx={{ flexGrow: 1, p: 3, minHeight: `100vh`, minWidth: `100vh` }}
       >
         <DrawerHeader />
-        <Typography paragraph sx={{}}>
-          content here
-        </Typography>
+        <Box
+          sx={{
+            display: `flex`,
+            overflow: `hidden`,
+            flexWrap: `wrap`,
+            justifyContent: `center`,
+          }}
+        >
+          <Score />
+          <Score />
+          <Score />
+          <Score />
+          <Score />
+        </Box>
       </Box>
     </Box>
   );

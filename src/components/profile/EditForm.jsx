@@ -38,18 +38,18 @@ export default function AddressForm(props2) {
   });
 
   useEffect(() => {
-    setFirstName(data.user.normal_user.first_name_eng);
-    setLastName(data.user.normal_user.last_name_eng);
-    setFirstNameTH(data.user.normal_user.first_name_thai);
-    setLastNameTH(data.user.normal_user.last_name_thai);
-    setBirth(data.user.normal_user.born);
-    setPhone(data.user.normal_user.phone);
-    setHeight(data.user.normal_user.height);
-    setWeight(data.user.normal_user.weight);
-    setGender(data.user.normal_user.sex);
-    setPosition(data.user.normal_user.position);
-    setNationality(data.user.normal_user.nationality);
-    setDescription(data.user.normal_user.description);
+    setFirstName(data.user.detail.first_name_eng);
+    setLastName(data.user.detail.last_name_eng);
+    setFirstNameTH(data.user.detail.first_name_thai);
+    setLastNameTH(data.user.detail.last_name_thai);
+    setBirth(data.user.detail.born);
+    setPhone(data.user.detail.phone);
+    setHeight(data.user.detail.height);
+    setWeight(data.user.detail.weight);
+    setGender(data.user.detail.sex);
+    setPosition(data.user.detail.position);
+    setNationality(data.user.detail.nationality);
+    setDescription(data.user.detail.description);
   }, []);
 
   const handleFirstnameChangeEN = (e) => {
@@ -294,7 +294,7 @@ export default function AddressForm(props2) {
         <Button onClick={handleSave} sx={{ m: `1rem` }} variant="contained">
           Save
         </Button>
-        <Button onClick={() => console.log(birth)}>born</Button>
+        {/* <Button onClick={() => console.log(birth)}>born</Button> */}
       </Grid>
     </React.Fragment>
   );

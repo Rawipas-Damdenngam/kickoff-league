@@ -23,14 +23,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
-import { useState, useContext, useEffect ,useRef } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Button, Icon, createTheme } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CreateTeam from "../components/myTeam/CreateTeam";
 import MyteamList from "../components/myTeam/MyteamList";
 import TeamContext from "../components/context/TeamContext";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 
 const drawerWidth = 240;
 
@@ -67,7 +67,7 @@ const drawerItems = [
   },
   {
     title: "การแข่งขันของฉัน",
-    icon: <AddLocationAltIcon/>,
+    icon: <AddLocationAltIcon />,
     link: "/myCompetition",
   },
   {
@@ -172,7 +172,7 @@ export default function MyTeam() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
-  const teamProfile = useRef("src/assets/images/manChest.jpeg")
+  const teamProfile = useRef("src/assets/images/manChest.jpeg");
   const [editProfile, setEditProfile] = useState(false);
 
   useEffect(() => {
@@ -352,7 +352,7 @@ export default function MyTeam() {
             justifyContent: `flex-end`,
           }}
         >
-          <Button onClick={trya}>get team</Button>
+          {/* <Button onClick={trya}>get team</Button> */}
           <Button
             sx={{ display: `${joinTeamTab ? `none` : ``}` }}
             onClick={handleCreateTeam}

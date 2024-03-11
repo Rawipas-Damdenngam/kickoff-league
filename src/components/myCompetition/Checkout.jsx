@@ -79,9 +79,9 @@ export default function Checkout() {
                 Thank you for your Competition.
               </Typography>
               <Typography variant="subtitle1">
-                Your competition number is #2001539. We have emailed to your competition
-                confirmation, and will send you an update when your competition has
-                placed.
+                Your competition number is #2001539. We have emailed to your
+                competition confirmation, and will send you an update when your
+                competition has placed.
               </Typography>
             </React.Fragment>
           ) : (
@@ -99,7 +99,9 @@ export default function Checkout() {
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  {activeStep === steps.length - 1 ? "Create Competition" : "Next"}
+                  {activeStep === steps.length - 1
+                    ? "Create Competition"
+                    : "Next"}
                 </Button>
               </Box>
             </React.Fragment>

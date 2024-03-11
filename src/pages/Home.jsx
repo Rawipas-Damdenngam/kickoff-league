@@ -34,7 +34,7 @@ import ShowSignIn from "../components/login/Signin";
 import ShowNewAcc from "../components/login/NewAcc";
 import { DataContext } from "../components/context/DataContext";
 import { Sync } from "@mui/icons-material";
-import News from "./news";
+import News from "./News";
 import ShowNewOrganize from "../components/login/NewOrganize";
 
 export default function Home() {
@@ -225,7 +225,6 @@ export default function Home() {
         localStorage.setItem("roleBaseID", data.user.normal_user_id);
         setUsername("");
         setPassword("");
-
       } else if (res.status === 200 && data.user.role === "organizer") {
         toast.success(data.message);
         console.log("yay it 200");
@@ -236,8 +235,7 @@ export default function Home() {
         localStorage.setItem("roleBaseID", data.user.organizer_id);
         setUsername("");
         setPassword("");
-      } 
-      else {
+      } else {
         console.log("nope it not 200");
         toast.error(data.message);
       }
@@ -250,10 +248,6 @@ export default function Home() {
       console.log(e);
     }
   };
-
-  // if (isNavigate) {
-  //   navigate("/news");
-  // }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -290,14 +284,14 @@ export default function Home() {
                 ค้นหาผู้คน
               </Typography>
             </Link>
-            <Button
+            {/* <Button
               onClick={() => {
                 console.log(user);
               }}
               variant="contained"
             >
               get user
-            </Button>
+            </Button> */}
           </Box>
           <Box
             component="section"

@@ -1,104 +1,123 @@
-import { Bracket } from "react-brackets";
+import React from "react";
+import Reacket from "reacket";
 
-const rounds = [
+const match = [
   {
-    title: "Round one",
-    seeds: [
+    id: 1,
+    round: 1,
+    match: 1,
+    players: [
       {
         id: 1,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 1" }, { name: "Team 2" }],
+        name: "Team A",
       },
       {
         id: 2,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 3" }, { name: "Team 4" }],
+        name: "Team B",
       },
+    ],
+    score: [0, 1],
+  },
+  {
+    id: 2,
+    round: 1,
+    match: 2,
+    players: [
       {
         id: 3,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 5" }, { name: "Team 6" }],
+        name: "Team C",
+        seed: 5,
       },
       {
         id: 4,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 7" }, { name: "Team 8" }],
-      },
-      {
-        id: 33,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 5" }, { name: "Team 6" }],
-      },
-      {
-        id: 44,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 7" }, { name: "Team 8" }],
-      },
-      {
-        id: 33,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 5" }, { name: "Team 6" }],
-      },
-      {
-        id: 44,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 7" }, { name: "Team 8" }],
+        name: "Team D",
+        seed: 4,
       },
     ],
+    score: [2, 3],
   },
   {
-    title: "Round two",
-    seeds: [
+    id: 3,
+    round: 1,
+    match: 3,
+    players: [
       {
         id: 5,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 1" }, { name: "Team 3" }],
+        name: "Team E",
       },
       {
         id: 6,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 5" }, { name: "Team 8" }],
-      },
-      {
-        id: 66,
-        date: new Date().toISOString(),
-        teams: [{ name: "Team 55" }, { name: "Team 88" }],
-      },
-      {
-        id: 66,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 5" }, { name: "Team 8" }],
+        name: "Team F",
       },
     ],
+    score: [3, 5],
   },
   {
-    title: "Round three",
-    seeds: [
+    id: 4,
+    round: 1,
+    match: 4,
+    players: [
       {
         id: 7,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 1" }, { name: "Team 8" }],
+        name: "Team G",
       },
-      {
-        id: 77,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 1" }, { name: "Team 8" }],
-      },
-    ],
-  },
-  {
-    title: "Final",
-    seeds: [
       {
         id: 8,
-        date: new Date().toDateString(),
-        teams: [{ name: "Team 1" }, { name: "Team 8" }],
+        name: "Team H",
       },
     ],
+    score: [4, 2],
+  },
+  {
+    id: 5,
+    round: 2,
+    match: 1,
+    players: [
+      {
+        id: 2,
+        name: "Team B",
+      },
+      {
+        id: 4,
+        name: "Team D",
+      },
+    ],
+    score: [4, 6],
+  },
+  {
+    id: 6,
+    round: 2,
+    match: 2,
+    players: [
+      {
+        id: 6,
+        name: "Team F",
+      },
+      {
+        id: 7,
+        name: "Team G",
+      },
+    ],
+    score: [0, 1],
+  },
+  {
+    id: 7,
+    round: 3,
+    match: 1,
+    players: [
+      {
+        id: 4,
+        name: "Team D",
+      },
+      {
+        id: 7,
+        name: "Team G",
+      },
+    ],
+    score: [0, 1],
   },
 ];
 
-
-export default function MatchBracket() {
-    return <Bracket rounds={rounds} />;
+export default function Bracket() {
+  return <Reacket matches={match} />;
 }

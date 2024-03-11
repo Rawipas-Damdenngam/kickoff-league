@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -159,9 +159,26 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+
+
 export default function KLDashboard() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    navigate("/");
+    localStorage.clear();
+    const data = await res.json();
+    console.log(data);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -196,8 +213,8 @@ export default function KLDashboard() {
           >
             Dashboard
           </Typography>
-          <Link to="/"></Link>
-          <Button variant="contained" sx={{}}>
+
+          <Button variant="contained" onClick={handleLogout} sx={{}}>
             <LogoutIcon></LogoutIcon>
           </Button>
         </Toolbar>

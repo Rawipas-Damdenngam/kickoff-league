@@ -321,7 +321,7 @@ export default function MyCompetition() {
           </Box>
         </Box>
         <Box id="team-list">
-          list here
+          {/* list here */}
           <Box
             id="my-team=list"
             sx={{

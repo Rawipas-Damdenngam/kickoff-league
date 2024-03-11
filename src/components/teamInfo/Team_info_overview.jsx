@@ -10,7 +10,7 @@ import React from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function TeamInfoOverview(props2) {
-  const {teamInfo} = props2;
+  const { teamInfo } = props2;
   const teamNew = [
     {
       title: "1",
@@ -35,7 +35,7 @@ export default function TeamInfoOverview(props2) {
   ];
 
   return (
-    <Box sx={{ display: `flex`, }}>
+    <Box sx={{ display: `flex` }}>
       <Box
         sx={{
           flexDirection: `column`,
@@ -89,7 +89,7 @@ export default function TeamInfoOverview(props2) {
           flexDirection: `column`,
           flexGrow: `1`,
           p: `1rem`,
-          border: `1px solid `,
+          // border: `1px solid `,
           borderRadius: `10px`,
           overflow: `hidden`,
           flexWrap: `wrap`,
@@ -202,7 +202,7 @@ export default function TeamInfoOverview(props2) {
             </Box>
           </Box>
         </Box>
-        <Box>3</Box>
+        {/* <Box>3</Box> */}
       </Box>
     </Box>
   );

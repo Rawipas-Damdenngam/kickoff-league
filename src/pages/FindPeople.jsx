@@ -489,7 +489,7 @@ export default function FindPeople() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1, minWidth: `200px` }}>
-            FindPeople
+            Find People
           </Typography>
 
             <Button onClick={handleLogout} variant="contained" sx={{}}>
