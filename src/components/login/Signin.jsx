@@ -7,7 +7,6 @@ import TextField from "@mui/material/TextField";
 import Links from "@mui/material/Link";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import Data from "../../../mockUP.json";
 import { toast } from "react-toastify";
 
 export default function ShowSignIn(props) {

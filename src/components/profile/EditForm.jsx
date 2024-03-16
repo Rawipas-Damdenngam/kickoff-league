@@ -38,18 +38,18 @@ export default function AddressForm(props2) {
   });
 
   useEffect(() => {
-    setFirstName(data.user.detail.first_name_eng);
-    setLastName(data.user.detail.last_name_eng);
-    setFirstNameTH(data.user.detail.first_name_thai);
-    setLastNameTH(data.user.detail.last_name_thai);
-    setBirth(data.user.detail.born);
-    setPhone(data.user.detail.phone);
-    setHeight(data.user.detail.height);
-    setWeight(data.user.detail.weight);
-    setGender(data.user.detail.sex);
-    setPosition(data.user.detail.position);
-    setNationality(data.user.detail.nationality);
-    setDescription(data.user.detail.description);
+    setFirstName(data.user.detail?.first_name_eng);
+    setLastName(data.user.detail?.last_name_eng);
+    setFirstNameTH(data.user.detail?.first_name_thai);
+    setLastNameTH(data.user.detail?.last_name_thai);
+    setBirth(data.user.detail?.born);
+    setPhone(data.user.detail?.phone);
+    setHeight(data.user.detail?.height);
+    setWeight(data.user.detail?.weight);
+    setGender(data.user.detail?.sex);
+    setPosition(data.user.detail?.position);
+    setNationality(data.user.detail?.nationality);
+    setDescription(data.user.detail?.description);
   }, []);
 
   const handleFirstnameChangeEN = (e) => {

@@ -37,7 +37,6 @@ import {
 } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Data from "../../mockUP.json";
 import TeamInfoOverview from "../components/teamInfo/Team_info_overview";
 import TeamInfoMember from "../components/teamInfo/Team_info_member";
 import TeamInfoCompetition from "../components/teamInfo/Team_info_competition";

@@ -24,13 +24,13 @@ export default function EditProfileImage(props) {
       <Box sx={style}>
         <Box
           sx={{
-            display: `flex`,
+            display: `block`,
             flexDirection: `column`,
             justifyContent: `center`,
             alignItems: `center`,
             width: `100%`,
             height: `100%`,
-            overflowY: `auto`,
+            overflow: `scroll`,
           }}
         >
           <ImageCropper

@@ -10,7 +10,7 @@ export default function Table() {
           <tr style={{ flex: `1 1 auto` }}>
             <th
               style={{
-                minWidth: `50px`,
+                width: `50px`,
                 height: `50px`,
                 alignItems: `center`,
               }}
@@ -34,7 +34,7 @@ export default function Table() {
           <tr style={{ flex: `1 1 auto` }}>
             <th
               style={{
-                minWidth: `50px`,
+                width: `50px`,
                 height: `50px`,
                 alignItems: `center`,
               }}

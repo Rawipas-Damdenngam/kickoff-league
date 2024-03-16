@@ -466,7 +466,7 @@ export default function Home() {
         <Box
           sx={{
             width: 100 + "%",
-            height: 50 + "vh",
+            height: 40 + "vh",
             zIndex: 100,
             position: "relative",
             display: "flex",
@@ -483,26 +483,6 @@ export default function Home() {
                 height: 100 + "%",
               }}
             >
-              <Box
-                sx={{
-                  width: 100 + "%",
-                  height: 100 + "%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
-                }}
-              >
-                <TextField
-                  sx={{ backgroundColor: "white", width: 600 }}
-                  variant="outlined"
-                  label="Enter something u like"
-                ></TextField>
-                <Box sx={{ ml: -5, zIndex: 1 }}>
-                  <SearchIcon
-                    sx={{ display: "flex", alignItems: "center" }}
-                  ></SearchIcon>
-                </Box>
-              </Box>
             </Box>
           </Box>
         </Box>

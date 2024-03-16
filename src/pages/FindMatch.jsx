@@ -41,7 +41,7 @@ import {
 } from "@mui/material";
 import { Dashboard, History, People, AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Data from "../../mockUP.json";
+
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 
 const drawerWidth = 240;

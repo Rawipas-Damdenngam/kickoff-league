@@ -44,7 +44,7 @@ import {
   Edit,
 } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Data from "../../mockUP.json";
+
 import EditProfileImage from "../components/profile/EditProfileImage";
 import Resizer from "react-image-file-resizer";
 import EditProfileInfo from "../components/profile/EditProfileInfo";
@@ -254,7 +254,7 @@ export default function Profile() {
     setIsEdit(false);
   };
 
-  const profile = useRef("src/assets/images/profile1.jpeg");
+  const profile = useRef("src/assets/images/default_profile.jpeg");
   const [editImage, setEditImage] = useState(false);
 
   function dataURItoBlob(dataURI) {
@@ -563,9 +563,7 @@ export default function Profile() {
                         borderRadius: `10px`,
                       }}
                     >
-                      {userData.detail?.first_name_eng +
-                        " " +
-                        userData.detail?.last_name_eng}
+                      {userData.detail? userData.detail.first_name_eng +" " +userData.detail?.last_name_eng:"Firstname Lastname"}
                     </Typography>
                   </Box>
                 </Box>
@@ -626,8 +624,7 @@ export default function Profile() {
           </Box>
         </Box>
         <hr></hr>
-        <Box sx={{}}>
-          <Box sx={{}}>
+
             <Box sx={{ mt: `2rem`, px: `4rem`, pb: `5rem` }}>
               <Box sx={{ display: `flex` }}>
                 <Box
@@ -759,7 +756,7 @@ export default function Profile() {
                                 alignItems: `flex-end`,
                               }}
                             >
-                              <Typography sx={{}}>{age}</Typography>
+                              <Typography sx={{}}>{age? age: ""}</Typography>
                             </Box>
                           </Box>
                           <Box
@@ -872,7 +869,7 @@ export default function Profile() {
                   </IconButton>
                 </Box>
 
-                <Box sx={{ m: `1rem`, flexGrow: `1` }}></Box>
+                {/* <Box sx={{ m: `1rem`, flexGrow: `1` }}></Box> */}
                 {isEdit ? (
                   <EditProfileInfo
                     open={isEdit}
@@ -882,8 +879,6 @@ export default function Profile() {
                 ) : null}
               </Box>
             </Box>
-          </Box>
-        </Box>
       </Box>
     </Box>
   );

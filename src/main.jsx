@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import News from "./pages/news.jsx";
+import News from "./pages/News.jsx";
 import Schedule from "./pages/schedule.jsx";
 import FindMatch from "./pages/FindMatch.jsx";
 import FindTeam from "./pages/FindTeam.jsx";
